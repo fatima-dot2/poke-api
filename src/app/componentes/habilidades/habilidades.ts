@@ -1,11 +1,12 @@
 import { Component, inject } from '@angular/core';
 import { FormsModule } from '@angular/forms';
+import { UpperCasePipe } from '@angular/common';
 import { PokemonService } from '../../services/pokemon-service';
 import swal from 'sweetalert2';
 
 
 @Component({
-  imports: [FormsModule],
+  imports: [FormsModule , UpperCasePipe],
   selector: 'app-habilidades',
   styleUrl: './habilidades.css',
   templateUrl: './habilidades.html',
