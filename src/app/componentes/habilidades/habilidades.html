@@ -1,2 +1,50 @@
 <div class="container mt-5">
-    <h1 class="text-center mb-4">Habilidades</h1>
+    <h1 class="text-center mb-4">Habilidades Pokemon</h1>
+    <div class=" row justify-content-center">
+        <div clas="col-md-6">
+            <input 
+            type="text"
+            class="form-control mb-3"
+            [(ngModel)]="nombre"
+            placeholder="Ingrese el nombre de la habilidad">
+
+            <button
+            class="btn btn-primary w-100"
+            (click)="buscarHabilidad()">
+                Buscar Habilidad
+            </button>
+        </div>
+    </div>
+
+    @if (habilidad){
+        <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        {{ habilidad.name | uppercase }}
+                    </h2>
+                    <p class="card-text">
+                        <strong>ID:</strong>
+                        {{ habilidad.id }}
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Generación:</strong>
+                        {{ habilidad.generation.name}}
+                    </p>
+                    <h5 class="mt-4">
+                        Efecto:
+                    </h5>
+                    @for (efecto of habilidad.effect_entries; track efecto.lenguage.name){
+                        @if (efecto.lenguage.name == "es") {
+                            <p>
+                                {{ efecto.efect}}
+                            </p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        </div>
+    }
