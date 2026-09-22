@@ -1,1 +1,65 @@
-<p>especies works!</p>
+<div class="container m-5">
+    <h1 class="text-center mb-4">
+        Especies Pokemon
+    </h1>
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <input
+            type="text"
+            class="form-control mb-3"
+            [(ngModel)]="nombre"
+            placeholder="Ingrese el nombre de la especie">
+
+            <button
+            class="btn btn-primary w-100"
+            (click)="buscarEspecie()">
+            Buscar especie
+            </button>
+        </div>
+    </div>
+</div>
+
+@if (especie){
+    <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card body">
+                    <h2 calss="card.title text-primary">
+                        {{ especie.name | uppercase}}
+                    </h2>
+                    <p class="card text">
+                        <strong>ID:</strong>
+                        {{ especie.id }}    
+                    </p>
+                    <p class="card text">
+                        <strong>Generacion:</strong>
+                        {{especie.generacion.name}}
+                    </p>
+                    <p class="card text">
+                        <strong>Habitat:</strong>
+                        @if (especie.habitat) {
+                            {{especie.habitat.name}}
+                        } else {
+                            No disponible
+                        }
+                    </p>
+                    <p class="card text">
+                        <strong>Color:</strong>
+                        {{especie.color.name}}
+                    </p>
+                    <h5 class="mt-4">
+                        Descripcion:
+                    </h5>
+                    @for (texto of especie.flavor_text_entries; track texto.version.name){
+                        @if (texto.lenguage.name === "en") {
+                            <p>
+                                {{texto.flavor_text}}
+                            </p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+    </div>
+
+}
