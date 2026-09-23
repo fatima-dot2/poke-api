@@ -1,1 +1,96 @@
-<p>evolucion works!</p>
+<div class="container py-5">
+
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">Evoluciones Pokémon</h1>
+
+    <p class="text-muted">
+      Busca un Pokémon para conocer su cadena de evolución.
+    </p>
+  </div>
+
+  <div class="row justify-content-center mb-5">
+
+    <div class="col-md-8">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: charmander"
+          [(ngModel)]="pokemonName"
+          (keyup.enter)="buscarEvoluciones()"
+        >
+
+        <button
+          class="btn btn-primary"
+          (click)="buscarEvoluciones()"
+          [disabled]="cargando"
+        >
+          {{ cargando ? 'Buscando...' : 'Buscar' }}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="cargando"
+    class="text-center"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    >
+      <span class="visually-hidden">
+        Cargando...
+      </span>
+    </div>
+
+    <p class="mt-3">
+      Consultando Pokémon...
+    </p>
+
+  </div>
+
+  <div
+    class="row justify-content-center"
+    *ngIf="evoluciones.length > 0"
+  >
+
+    <div
+      class="col-md-4 col-lg-3 mb-4"
+      *ngFor="let pokemon of evoluciones"
+    >
+
+      <div class="card h-100 shadow text-center">
+
+        <div class="card-body">
+
+          <h5 class="card-title text-capitalize">
+            {{ pokemon.name }}
+          </h5>
+
+          <img
+            [src]="pokemon.image"
+            [alt]="pokemon.name"
+            class="img-fluid"
+            width="180"
+          >
+
+          <p class="text-muted mb-0">
+            Pokémon #{{ pokemon.id }}
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
