@@ -36,33 +36,45 @@ export class Evolucion {
         title: 'Campo vacío',
         text: 'Escribe el nombre de un Pokémon.'
       });
+
       return;
     }
 
     this.cargando = true;
     this.evoluciones = [];
 
+    // Buscar el Pokémon
     this.http
       .get<any>(`${this.apiUrl}/pokemon-species/${nombre}`)
       .subscribe({
+
         next: (pokemon) => {
 
+          // Obtener la cadena de evolución
           this.http
             .get<any>(pokemon.evolution_chain.url)
             .subscribe({
+
               next: (cadena) => {
+
                 this.obtenerEvoluciones(cadena.chain);
+
                 this.cargando = false;
+
               },
+
               error: () => {
                 this.mostrarError();
               }
+
             });
 
         },
+
         error: () => {
           this.mostrarError();
         }
+
       });
   }
 
@@ -81,16 +93,27 @@ export class Evolucion {
       );
 
       this.evoluciones.push({
+
         name: actual.species.name,
+
         id: id,
+
         image:
           `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
+
       });
 
-      if (actual.evolves_to && actual.evolves_to.length > 0) {
+      if (
+        actual.evolves_to &&
+        actual.evolves_to.length > 0
+      ) {
+
         actual = actual.evolves_to[0];
+
       } else {
+
         actual = null;
+
       }
     }
   }
@@ -104,5 +127,6 @@ export class Evolucion {
       title: 'Pokémon no encontrado',
       text: 'Verifica el nombre del Pokémon e inténtalo nuevamente.'
     });
+
   }
 }
