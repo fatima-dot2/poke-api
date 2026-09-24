@@ -1,1 +1,61 @@
-<p>regiones works!</p>
+<div class="container py-5">
+
+  <div class="text-center mb-5">
+    <h1 class="fw-bold">Regiones Pokémon</h1>
+    <p class="text-muted">
+      Explora las diferentes regiones del mundo Pokémon.
+    </p>
+  </div>
+
+  <div *ngIf="cargando" class="text-center">
+    <div class="spinner-border text-primary" role="status">
+      <span class="visually-hidden">Cargando...</span>
+    </div>
+
+    <p class="mt-3">
+      Cargando regiones...
+    </p>
+  </div>
+
+  <div class="row" *ngIf="!cargando">
+
+    <div
+      class="col-md-4 col-lg-3 mb-4"
+      *ngFor="let region of regiones"
+    >
+
+      <div class="card h-100 shadow-sm">
+
+        <div class="card-body text-center">
+
+          <!-- IMAGEN DE LA REGIÓN -->
+          <img
+            [src]="region.image"
+            [alt]="region.name"
+            class="img-fluid mb-3"
+          >
+
+          <h5 class="card-title text-capitalize">
+            {{ region.name }}
+          </h5>
+
+          <p class="card-text">
+            Región número {{ region.id }}
+          </p>
+
+          <button
+            class="btn btn-primary"
+            (click)="mostrarRegion(region)"
+          >
+            Ver región
+          </button>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div> 
