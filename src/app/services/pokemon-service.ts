@@ -15,10 +15,17 @@ export class PokemonService {
     );
   }
 
-  getPokemonSpecies(nombre: string) {
-    return this.http.get(
-      this.URL_BASE + 'pokemon-species/' + nombre.toLowerCase().trim()
-    );
-  }
-
+getPokemonSpecies(nombre: string) {
+  return this.http.get(
+    this.URL_BASE + 'pokemon-species/' + nombre.toLowerCase().trim()
+  );
 }
+
+getTypes() {
+  return this.http.get(this.URL_BASE + 'type');
+}
+
+getGenerations() {
+  return this.http.get(this.URL_BASE + 'generation');
+}
+    }

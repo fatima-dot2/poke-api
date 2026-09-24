@@ -1,9 +1,23 @@
-import { Component } from '@angular/core';
+import { Component, inject } from '@angular/core';
+import { PokemonService } from '../../services/pokemon-service';
 
 @Component({
-  imports: [],
   selector: 'app-tipos',
-  styleUrl: './tipos.css',
+  imports: [],
   templateUrl: './tipos.html',
+  styleUrl: './tipos.css'
 })
-export class Tipos {}
+export class Tipos {
+
+  private pokemonService = inject(PokemonService);
+
+  tipos: any[] = [];
+
+  ngOnInit() {
+    this.pokemonService.getTypes().subscribe((respuesta: any) => {
+      console.log(respuesta);
+      this.tipos = respuesta.results;
+    });
+  }
+
+}

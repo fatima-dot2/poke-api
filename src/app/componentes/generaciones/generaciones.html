@@ -1,1 +1,31 @@
-<p>generaciones works!</p>
+<div class="container mt-5">
+
+  <h1 class="text-center mb-4">
+    Generaciones de Pokémon
+  </h1>
+
+  <div class="row g-4">
+
+    @for (generacion of generaciones; track generacion.name) {
+
+      <div class="col-md-4">
+
+        <div class="card shadow h-100">
+
+          <div class="card-body text-center">
+
+            <h3 class="card-title text-capitalize">
+              {{ generacion.name }}
+            </h3>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>
