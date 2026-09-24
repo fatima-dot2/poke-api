@@ -1,9 +1,37 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { RouterModule } from '@angular/router';
+import { PokemonService } from '../../services/pokemon-service';
 
 @Component({
-  imports: [],
   selector: 'app-lista-pokemon',
-  styleUrl: './lista-pokemon.css',
-  templateUrl: './lista-pokemon.html',
+  standalone: true,
+  imports: [CommonModule, RouterModule],
+  templateUrl: './lista-pokemon.html'
 })
-export class ListaPokemon {}
+export class ListaPokemon implements OnInit {
+
+  pokemones: any[] = [];
+
+  constructor(private pokemonService: PokemonService) {}
+
+  ngOnInit(): void {
+    this.obtenerPokemones();
+  }
+
+  obtenerPokemones(): void {
+    this.pokemonService.getPokemonList().subscribe({
+      next: (data: any) => {
+        this.pokemones = data.results;
+      },
+      error: (error) => {
+        console.log('Error:', error);
+      }
+    });
+  }
+
+  obtenerId(url: string): string {
+    const partes = url.split('/');
+    return partes[partes.length - 2];
+  }
+}

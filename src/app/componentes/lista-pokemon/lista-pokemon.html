@@ -1,1 +1,29 @@
-<p>lista-pokemon works!</p>
+<div class="container mt-4">
+
+  <h1>Lista de Pokémon</h1>
+
+  <div class="row">
+
+    @for (p of pokemones; track p.name) {
+
+      <div class="col-md-4 mb-3">
+
+        <div class="card p-3">
+
+          <h3>{{ p.name | titlecase }}</h3>
+
+          <a
+            class="btn btn-primary"
+            [routerLink]="['/pokemon', obtenerId(p.url)]">
+            Ver detalle
+          </a>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

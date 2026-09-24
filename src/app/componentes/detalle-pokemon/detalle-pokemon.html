@@ -1,1 +1,55 @@
-<p>detalle-pokemon works!</p>
+<div class="container mt-4">
+
+  @if (pokemon) {
+
+    <div class="card">
+
+      <div class="card-body text-center">
+
+        <h1>
+          {{ pokemon.name | titlecase }}
+        </h1>
+
+        <img
+          [src]="pokemon.sprites.front_default"
+          [alt]="pokemon.name"
+          width="200"
+        >
+
+        <p>
+          <strong>ID:</strong>
+          {{ pokemon.id }}
+        </p>
+
+        <p>
+          <strong>Altura:</strong>
+          {{ pokemon.height }}
+        </p>
+
+        <p>
+          <strong>Peso:</strong>
+          {{ pokemon.weight }}
+        </p>
+
+        <p>
+          <strong>Tipos:</strong>
+
+          @for (tipo of pokemon.types; track tipo.type.name) {
+            {{ tipo.type.name | titlecase }}
+          }
+
+        </p>
+
+        <a
+          routerLink="/"
+          class="btn btn-secondary">
+          Regresar a la lista
+        </a>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

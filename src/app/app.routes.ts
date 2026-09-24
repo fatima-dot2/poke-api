@@ -1,22 +1,18 @@
 import { Routes } from '@angular/router';
-import { Especies } from './componentes/especies/especies';
-import { Habilidades } from './componentes/habilidades/habilidades';
-import { Inicio } from './componentes/inicio/inicio';
+
+import { ListaPokemon } from './componentes/lista-pokemon/lista-pokemon';
+import { DetallePokemon } from './componentes/detalle-pokemon/detalle-pokemon';
 
 export const routes: Routes = [
 
-     {
+  {
     path: '',
-    component: Inicio
-     },
+    component: ListaPokemon
+  },
 
-    {
-        path: 'habilidades',
-        component: Habilidades
-    },
+  {
+    path: 'pokemon/:id',
+    component: DetallePokemon
+  }
 
-    {
-        path: 'especies',
-        component: Especies
-    }
 ];
