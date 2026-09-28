@@ -5,20 +5,18 @@ import { Injectable, inject } from '@angular/core';
   providedIn: 'root'
 })
 export class PokemonService {
-
-  private URL_BASE = 'https://pokeapi.co/api/v2/';
   private http = inject(HttpClient);
+  private URL_BASE = 'https://pokeapi.co/api/v2/pokemon/';
 
   getAbility(nombre: string) {
     return this.http.get(
-      this.URL_BASE + 'ability/' + nombre.toLowerCase().trim()
+        this.URL_BASE + nombre.toLocaleLowerCase() + '/ability'
     );
-  }
+}
 
-  getPokemonSpecies(nombre: string) {
+getSpecies(nombre: string) {
     return this.http.get(
-      this.URL_BASE + 'pokemon-species/' + nombre.toLowerCase().trim()
+        this.URL_BASE + nombre.toLocaleLowerCase() + '/species'
     );
   }
-
 }
