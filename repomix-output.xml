@@ -1,0 +1,5078 @@
+This file is a merged representation of the entire codebase, combined into a single document by Repomix.
+
+<file_summary>
+This section contains a summary of this file.
+
+<purpose>
+This file contains a packed representation of the entire repository's contents.
+It is designed to be easily consumable by AI systems for analysis, code review,
+or other automated processes.
+</purpose>
+
+<file_format>
+The content is organized as follows:
+1. This summary section
+2. Repository information
+3. Directory structure
+4. Repository files (if enabled)
+5. Multiple file entries, each consisting of:
+  - File path as an attribute
+  - Full contents of the file
+</file_format>
+
+<usage_guidelines>
+- This file should be treated as read-only. Any changes should be made to the
+  original repository files, not this packed version.
+- When processing this file, use the file path to distinguish
+  between different files in the repository.
+- Be aware that this file may contain sensitive information. Handle it with
+  the same level of security as you would the original repository.
+</usage_guidelines>
+
+<notes>
+- Some files may have been excluded based on .gitignore rules and Repomix's configuration
+- Binary files are not included in this packed representation. Please refer to the Repository Structure section for a complete list of file paths, including binary files
+- Files matching patterns in .gitignore are excluded
+- Files matching default ignore patterns are excluded
+- Files are sorted by Git change count (files with more changes are at the bottom)
+</notes>
+
+</file_summary>
+
+<directory_structure>
+public/
+  favicon.ico
+src/
+  app/
+    componentes/
+      detalle-pokemon/
+        detalle-pokemon.css
+        detalle-pokemon.html
+        detalle-pokemon.spec.ts
+        detalle-pokemon.ts
+      especies/
+        especies.css
+        especies.html
+        especies.spec.ts
+        especies.ts
+      evolucion/
+        evolucion.css
+        evolucion.html
+        evolucion.spec.ts
+        evolucion.ts
+      generaciones/
+        generaciones.css
+        generaciones.html
+        generaciones.spec.ts
+        generaciones.ts
+      habilidades/
+        habilidades.css
+        habilidades.html
+        habilidades.spec.ts
+        habilidades.ts
+      inicio/
+        inicio.css
+        inicio.html
+        inicio.spec.ts
+        inicio.ts
+      lista-pokemon/
+        lista-pokemon.css
+        lista-pokemon.html
+        lista-pokemon.spec.ts
+        lista-pokemon.ts
+      movimientos/
+        movimientos.css
+        movimientos.html
+        movimientos.spec.ts
+        movimientos.ts
+      poke-api/
+        poke-api.css
+        poke-api.html
+        poke-api.spec.ts
+        poke-api.ts
+      pokedex/
+        pokedex.css
+        pokedex.html
+        pokedex.spec.ts
+        pokedex.ts
+      regiones/
+        regiones.css
+        regiones.html
+        regiones.spec.ts
+        regiones.ts
+      tipos/
+        tipos.css
+        tipos.html
+        tipos.spec.ts
+        tipos.ts
+    services/
+      poke-api.spec.ts
+      poke-api.ts
+      pokemon-service.spec.ts
+      pokemon-service.ts
+    app.config.server.ts
+    app.config.ts
+    app.css
+    app.html
+    app.routes.server.ts
+    app.routes.ts
+    app.spec.ts
+    app.ts
+  index.html
+  main.server.ts
+  main.ts
+  server.ts
+  styles.css
+.editorconfig
+.gitignore
+.prettierrc
+angular.json
+package.json
+README.md
+tsconfig.app.json
+tsconfig.json
+tsconfig.spec.json
+</directory_structure>
+
+<files>
+This section contains the contents of the repository's files.
+
+<file path="src/app/componentes/detalle-pokemon/detalle-pokemon.css">
+
+</file>
+
+<file path="src/app/componentes/detalle-pokemon/detalle-pokemon.html">
+<div class="container py-4">
+
+  <div class="text-center mb-4">
+
+    <h1 class="fw-bold">
+      Detalle Pokémon
+    </h1>
+
+    <p class="text-muted">
+      Busca y consulta información detallada de cualquier Pokémon
+    </p>
+
+  </div>
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar Pokémon..."
+          [(ngModel)]="busqueda"
+          (input)="filtrarPokemon()"
+        >
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiarBusqueda()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+  >
+    {{ error }}
+  </div>
+
+  <div
+    *ngIf="cargandoLista"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Cargando lista de Pokémon...
+    </p>
+
+  </div>
+
+  <div
+    *ngIf="!cargandoLista"
+    class="row g-4"
+  >
+
+    <div class="col-12 col-lg-5">
+
+      <div class="card shadow-sm border-0">
+
+        <div class="card-header fw-bold">
+
+          Pokémon
+
+          <span class="badge bg-primary float-end">
+            {{ pokemonFiltrados.length }}
+          </span>
+
+        </div>
+
+        <div
+          class="list-group list-group-flush"
+          style="max-height: 650px; overflow-y: auto;"
+        >
+
+          <button
+            *ngFor="let item of pokemonFiltrados"
+            type="button"
+            class="list-group-item list-group-item-action text-capitalize text-start"
+            (click)="seleccionarPokemon(item.name)"
+          >
+
+            {{ item.name }}
+
+          </button>
+
+          <div
+            *ngIf="pokemonFiltrados.length === 0"
+            class="text-center p-4 text-muted"
+          >
+
+            No se encontraron Pokémon.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-12 col-lg-7">
+
+      <div
+        *ngIf="cargandoDetalle"
+        class="card shadow-sm border-0"
+      >
+
+        <div class="card-body text-center py-5">
+
+          <div
+            class="spinner-border text-primary"
+            role="status"
+          ></div>
+
+          <p class="mt-3 text-muted">
+            Cargando información...
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        *ngIf="!pokemon && !cargandoDetalle"
+        class="card shadow-sm border-0"
+      >
+
+        <div class="card-body text-center py-5">
+
+          <h3 class="text-muted">
+            Selecciona un Pokémon
+          </h3>
+
+          <p class="text-muted mb-0">
+            Selecciona uno de la lista para ver sus detalles.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        *ngIf="pokemon && !cargandoDetalle"
+        class="card shadow-sm border-0"
+      >
+
+        <div class="card-body">
+
+          <div class="text-center mb-4">
+
+            <h2 class="fw-bold text-capitalize">
+              {{ pokemon.name }}
+            </h2>
+
+            <span class="badge bg-secondary">
+              #{{ pokemon.id }}
+            </span>
+
+            <div class="mt-3">
+
+              <img
+                [src]="obtenerImagen()"
+                [alt]="pokemon.name"
+                class="img-fluid"
+                style="max-height: 280px;"
+              >
+
+            </div>
+
+          </div>
+
+          <div class="row g-3 mb-4">
+
+            <div class="col-12 col-md-4">
+
+              <div class="card bg-light border-0 h-100">
+
+                <div class="card-body text-center">
+
+                  <small class="text-muted">
+                    Altura
+                  </small>
+
+                  <h4 class="fw-bold">
+                    {{ pokemon.height / 10 }} m
+                  </h4>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-12 col-md-4">
+
+              <div class="card bg-light border-0 h-100">
+
+                <div class="card-body text-center">
+
+                  <small class="text-muted">
+                    Peso
+                  </small>
+
+                  <h4 class="fw-bold">
+                    {{ pokemon.weight / 10 }} kg
+                  </h4>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-12 col-md-4">
+
+              <div class="card bg-light border-0 h-100">
+
+                <div class="card-body text-center">
+
+                  <small class="text-muted">
+                    Experiencia
+                  </small>
+
+                  <h4 class="fw-bold">
+                    {{ pokemon.base_experience }}
+                  </h4>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+
+            <div class="card-header fw-bold">
+              Tipos
+            </div>
+
+            <div class="card-body">
+
+              <span
+                *ngFor="let tipo of pokemon.types"
+                class="badge bg-primary me-2 text-capitalize"
+              >
+                {{ tipo.type.name }}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+
+            <div class="card-header fw-bold">
+              Habilidades
+            </div>
+
+            <div class="card-body">
+
+              <div
+                *ngFor="let habilidad of pokemon.abilities"
+                class="mb-2 text-capitalize"
+              >
+
+                {{ habilidad.ability.name }}
+
+                <span
+                  *ngIf="habilidad.is_hidden"
+                  class="badge bg-secondary ms-2"
+                >
+                  Oculta
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+
+            <div class="card-header fw-bold">
+              Estadísticas
+            </div>
+
+            <div class="card-body">
+
+              <div
+                *ngFor="let estadistica of pokemon.stats"
+                class="mb-3"
+              >
+
+                <div class="d-flex justify-content-between">
+
+                  <span class="text-capitalize">
+                    {{ estadistica.stat.name }}
+                  </span>
+
+                  <strong>
+                    {{ estadistica.base_stat }}
+                  </strong>
+
+                </div>
+
+                <div class="progress">
+
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    [style.width.%]="
+                      (estadistica.base_stat / 255) * 100
+                    "
+                  ></div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-header fw-bold">
+              Movimientos
+            </div>
+
+            <div
+              class="card-body"
+              style="max-height: 300px; overflow-y: auto;"
+            >
+
+              <div class="row g-2">
+
+                <div
+                  *ngFor="let movimiento of pokemon.moves"
+                  class="col-12 col-sm-6 col-md-4"
+                >
+
+                  <div
+                    class="border rounded p-2 text-capitalize"
+                  >
+                    {{ movimiento.move.name }}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</file>
+
+<file path="src/app/componentes/detalle-pokemon/detalle-pokemon.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting
+} from '@angular/common/http/testing';
+
+import { DetallePokemon } from './detalle-pokemon';
+
+describe('DetallePokemon', () => {
+
+  beforeEach(async () => {
+
+    await TestBed.configureTestingModule({
+
+      imports: [
+        DetallePokemon
+      ],
+
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+
+    }).compileComponents();
+
+  });
+
+  it('debe crear el componente', () => {
+
+    const fixture =
+      TestBed.createComponent(DetallePokemon);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component).toBeTruthy();
+
+  });
+
+  it('debe iniciar sin Pokémon seleccionado', () => {
+
+    const fixture =
+      TestBed.createComponent(DetallePokemon);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.pokemon).toBeNull();
+
+  });
+
+  it('debe iniciar sin error', () => {
+
+    const fixture =
+      TestBed.createComponent(DetallePokemon);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.error).toBe('');
+
+  });
+
+  it('debe iniciar sin estar cargando', () => {
+
+    const fixture =
+      TestBed.createComponent(DetallePokemon);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.cargandoLista).toBeFalsy();
+    expect(component.cargandoDetalle).toBeFalsy();
+
+  });
+
+  it('debe limpiar la búsqueda', () => {
+
+    const fixture =
+      TestBed.createComponent(DetallePokemon);
+
+    const component =
+      fixture.componentInstance;
+
+    component.busqueda = 'pika';
+    component.error = 'Error';
+    component.pokemon = null;
+
+    component.limpiarBusqueda();
+
+    expect(component.busqueda).toBe('');
+    expect(component.error).toBe('');
+    expect(component.pokemon).toBeNull();
+
+  });
+
+});
+</file>
+
+<file path="src/app/componentes/detalle-pokemon/detalle-pokemon.ts">
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+interface PokemonLista {
+  name: string;
+  url: string;
+}
+
+interface PokemonResponse {
+  count: number;
+  results: PokemonLista[];
+}
+
+interface PokemonDetalle {
+  id: number;
+  name: string;
+  height: number;
+  weight: number;
+  base_experience: number;
+  sprites: {
+    front_default: string | null;
+    front_shiny: string | null;
+    other?: {
+      'official-artwork'?: {
+        front_default: string | null;
+      };
+    };
+  };
+  types: {
+    type: {
+      name: string;
+    };
+  }[];
+  abilities: {
+    ability: {
+      name: string;
+    };
+    is_hidden: boolean;
+  }[];
+  stats: {
+    base_stat: number;
+    stat: {
+      name: string;
+    };
+  }[];
+  moves: {
+    move: {
+      name: string;
+    };
+  }[];
+}
+
+@Component({
+  selector: 'app-detalle-pokemon',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './detalle-pokemon.html'
+})
+export class DetallePokemon implements OnInit {
+
+  private http = inject(HttpClient);
+
+  listaPokemon: PokemonLista[] = [];
+  pokemonFiltrados: PokemonLista[] = [];
+
+  pokemon: PokemonDetalle | null = null;
+
+  busqueda = '';
+
+  cargandoLista = false;
+  cargandoDetalle = false;
+
+  error = '';
+
+  ngOnInit(): void {
+    this.cargarPokemon();
+  }
+
+  cargarPokemon(): void {
+
+    this.cargandoLista = true;
+    this.error = '';
+
+    this.http
+      .get<PokemonResponse>(
+        'https://pokeapi.co/api/v2/pokemon?limit=2000'
+      )
+      .subscribe({
+
+        next: data => {
+
+          this.listaPokemon = data.results;
+          this.pokemonFiltrados = data.results;
+
+          this.cargandoLista = false;
+
+        },
+
+        error: () => {
+
+          this.error = 'No se pudo cargar la lista de Pokémon.';
+          this.cargandoLista = false;
+
+        }
+
+      });
+  }
+
+  filtrarPokemon(): void {
+
+    const texto = this.busqueda
+      .trim()
+      .toLowerCase();
+
+    if (!texto) {
+
+      this.pokemonFiltrados = this.listaPokemon;
+
+      return;
+    }
+
+    this.pokemonFiltrados =
+      this.listaPokemon.filter(pokemon =>
+        pokemon.name.includes(texto)
+      );
+  }
+
+  seleccionarPokemon(nombre: string): void {
+
+    this.cargandoDetalle = true;
+    this.error = '';
+
+    this.http
+      .get<PokemonDetalle>(
+        `https://pokeapi.co/api/v2/pokemon/${nombre}`
+      )
+      .subscribe({
+
+        next: data => {
+
+          this.pokemon = data;
+          this.cargandoDetalle = false;
+
+        },
+
+        error: () => {
+
+          this.error =
+            'No se pudo obtener la información del Pokémon.';
+
+          this.pokemon = null;
+          this.cargandoDetalle = false;
+
+        }
+
+      });
+  }
+
+  limpiarBusqueda(): void {
+
+    this.busqueda = '';
+    this.pokemonFiltrados = this.listaPokemon;
+    this.pokemon = null;
+    this.error = '';
+
+  }
+
+  obtenerImagen(): string {
+
+    return (
+      this.pokemon
+        ?.sprites
+        .other?.['official-artwork']
+        ?.front_default
+      ??
+      this.pokemon?.sprites.front_default
+      ??
+      ''
+    );
+
+  }
+}
+</file>
+
+<file path="src/app/componentes/especies/especies.css">
+
+</file>
+
+<file path="src/app/componentes/especies/especies.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Especies } from './especies';
+
+describe('Especies', () => {
+  let component: Especies;
+  let fixture: ComponentFixture<Especies>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Especies],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(Especies);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/componentes/evolucion/evolucion.css">
+
+</file>
+
+<file path="src/app/componentes/evolucion/evolucion.html">
+<div class="container py-4">
+
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">Evolución Pokémon</h1>
+
+    <p class="text-muted">
+      Consulta la cadena de evolución de cualquier Pokémon
+    </p>
+  </div>
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: charmander"
+          [(ngModel)]="nombrePokemon"
+          (keyup.enter)="buscarEvolucion()"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarEvolucion()"
+          [disabled]="cargando"
+        >
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div class="text-center mb-4">
+
+    <p class="text-muted">
+      Ejemplos:
+    </p>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarEvolucion('bulbasaur')"
+    >
+      Bulbasaur
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarEvolucion('charmander')"
+    >
+      Charmander
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarEvolucion('squirtle')"
+    >
+      Squirtle
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarEvolucion('eevee')"
+    >
+      Eevee
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary mb-2"
+      (click)="buscarEvolucion('pikachu')"
+    >
+      Pikachu
+    </button>
+
+  </div>
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+  >
+    {{ error }}
+  </div>
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+  <div
+    *ngIf="evoluciones.length > 0 && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+      <h2 class="text-center fw-bold mb-4">
+        Cadena de evolución
+      </h2>
+
+      <div class="row justify-content-center align-items-center g-3">
+
+        <ng-container
+          *ngFor="let evolucion of evoluciones; let ultimo = last"
+        >
+
+          <div class="col-12 col-md-3">
+
+            <div class="card h-100 text-center border">
+
+              <div class="card-body">
+
+                <h4 class="fw-bold text-capitalize">
+                  {{ evolucion.nombre }}
+                </h4>
+
+                <p
+                  *ngIf="evolucion.nivel"
+                  class="mb-2"
+                >
+                  <strong>Nivel:</strong>
+                  {{ evolucion.nivel }}
+                </p>
+
+                <p
+                  *ngIf="evolucion.item"
+                  class="mb-2 text-capitalize"
+                >
+                  <strong>Objeto:</strong>
+                  {{ evolucion.item }}
+                </p>
+
+                <span class="badge bg-primary text-capitalize">
+                  {{ evolucion.trigger }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div
+            *ngIf="!ultimo"
+            class="col-auto d-none d-md-block"
+          >
+            <span class="fs-3">
+              →
+            </span>
+          </div>
+
+        </ng-container>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</file>
+
+<file path="src/app/componentes/evolucion/evolucion.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting
+} from '@angular/common/http/testing';
+
+import { Evolucion } from './evolucion';
+
+describe('Evolucion', () => {
+
+  beforeEach(async () => {
+
+    await TestBed.configureTestingModule({
+
+      imports: [
+        Evolucion
+      ],
+
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+
+    }).compileComponents();
+
+  });
+
+  it('debe crear el componente', () => {
+
+    const fixture =
+      TestBed.createComponent(Evolucion);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component).toBeTruthy();
+
+  });
+
+  it('debe iniciar sin error', () => {
+
+    const fixture =
+      TestBed.createComponent(Evolucion);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.error).toBe('');
+
+  });
+
+  it('debe iniciar sin evoluciones', () => {
+
+    const fixture =
+      TestBed.createComponent(Evolucion);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.evoluciones.length).toBe(0);
+
+  });
+
+  it('debe iniciar sin estar cargando', () => {
+
+    const fixture =
+      TestBed.createComponent(Evolucion);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.cargando).toBeFalsy();
+
+  });
+
+  it('debe limpiar la información', () => {
+
+    const fixture =
+      TestBed.createComponent(Evolucion);
+
+    const component =
+      fixture.componentInstance;
+
+    component.nombrePokemon = 'pikachu';
+
+    component.error = 'Error';
+
+    component.limpiar();
+
+    expect(component.nombrePokemon).toBe('');
+
+    expect(component.error).toBe('');
+
+    expect(component.evoluciones.length).toBe(0);
+
+  });
+
+});
+</file>
+
+<file path="src/app/componentes/evolucion/evolucion.ts">
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+interface PokemonSpecies {
+  evolution_chain: {
+    url: string;
+  } | null;
+}
+
+interface EvolutionDetail {
+  min_level: number | null;
+  item: {
+    name: string;
+  } | null;
+  trigger: {
+    name: string;
+  };
+}
+
+interface EvolutionNode {
+  species: {
+    name: string;
+  };
+  evolves_to: EvolutionNode[];
+  evolution_details: EvolutionDetail[];
+}
+
+interface EvolutionChain {
+  chain: EvolutionNode;
+}
+
+@Component({
+  selector: 'app-evolucion',
+  standalone: true,
+  imports: [CommonModule, FormsModule],
+  templateUrl: './evolucion.html'
+})
+export class Evolucion {
+
+  nombrePokemon = '';
+  evoluciones: {
+    nombre: string;
+    nivel: number | null;
+    item: string | null;
+    trigger: string;
+  }[] = [];
+
+  cargando = false;
+  error = '';
+
+  constructor(private http: HttpClient) {}
+
+  buscarEvolucion(nombre?: string): void {
+
+    const nombreBusqueda = (
+      nombre ?? this.nombrePokemon
+    ).trim().toLowerCase();
+
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de un Pokémon.';
+      this.evoluciones = [];
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.evoluciones = [];
+    this.nombrePokemon = nombreBusqueda;
+
+    this.http
+      .get<PokemonSpecies>(
+        `https://pokeapi.co/api/v2/pokemon-species/${nombreBusqueda}`
+      )
+      .subscribe({
+
+        next: especie => {
+
+          if (!especie.evolution_chain) {
+            this.error = 'Este Pokémon no tiene una cadena de evolución.';
+            this.cargando = false;
+            return;
+          }
+
+          this.http
+            .get<EvolutionChain>(especie.evolution_chain.url)
+            .subscribe({
+
+              next: cadena => {
+
+                this.procesarCadena(cadena.chain);
+
+                this.cargando = false;
+              },
+
+              error: () => {
+
+                this.error =
+                  'No se pudo obtener la cadena de evolución.';
+
+                this.cargando = false;
+              }
+
+            });
+        },
+
+        error: () => {
+
+          this.error = 'No se encontró el Pokémon.';
+
+          this.cargando = false;
+        }
+
+      });
+  }
+
+  private procesarCadena(
+    nodo: EvolutionNode
+  ): void {
+
+    const detalle = nodo.evolution_details?.[0];
+
+    this.evoluciones.push({
+      nombre: nodo.species.name,
+      nivel: detalle?.min_level ?? null,
+      item: detalle?.item?.name ?? null,
+      trigger: detalle?.trigger?.name ?? 'inicio'
+    });
+
+    nodo.evolves_to.forEach(
+      evolucion => this.procesarCadena(evolucion)
+    );
+  }
+
+  limpiar(): void {
+
+    this.nombrePokemon = '';
+    this.evoluciones = [];
+    this.error = '';
+  }
+}
+</file>
+
+<file path="src/app/componentes/generaciones/generaciones.css">
+
+</file>
+
+<file path="src/app/componentes/generaciones/generaciones.html">
+<div class="container py-4">
+
+  <!-- ENCABEZADO -->
+
+  <div class="text-center mb-4">
+
+    <h1 class="fw-bold">
+      Generaciones Pokémon
+    </h1>
+
+    <p class="text-muted">
+      Consulta información de las generaciones disponibles en PokéAPI
+    </p>
+
+  </div>
+
+
+  <!-- BUSCADOR -->
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: generation-i"
+          [(ngModel)]="nombreGeneracion"
+          (keyup.enter)="buscarGeneracion()"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarGeneracion()"
+          [disabled]="cargando"
+        >
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- GENERACIONES RÁPIDAS -->
+
+  <div class="text-center mb-4">
+
+    <p class="text-muted mb-2">
+      Selecciona una generación:
+    </p>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-i')"
+    >
+      Generación I
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-ii')"
+    >
+      Generación II
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-iii')"
+    >
+      Generación III
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-iv')"
+    >
+      Generación IV
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-v')"
+    >
+      Generación V
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-vi')"
+    >
+      Generación VI
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-vii')"
+    >
+      Generación VII
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-viii')"
+    >
+      Generación VIII
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary mb-2"
+      (click)="buscarGeneracion('generation-ix')"
+    >
+      Generación IX
+    </button>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+
+  <!-- CARGANDO -->
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+
+  <!-- RESULTADO -->
+
+  <div
+    *ngIf="generacion && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+
+      <!-- TÍTULO -->
+
+      <div class="text-center mb-4">
+
+        <h2 class="fw-bold text-capitalize">
+          {{ generacion.name }}
+        </h2>
+
+        <span class="badge bg-primary">
+          Generación Pokémon
+        </span>
+
+      </div>
+
+
+      <!-- INFORMACIÓN GENERAL -->
+
+      <div class="row g-3">
+
+
+        <!-- ID -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                ID
+              </h6>
+
+              <h3 class="fw-bold">
+                #{{ generacion.id }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- REGIÓN -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Región principal
+              </h6>
+
+              <h5 class="fw-bold text-capitalize">
+                {{ generacion.main_region.name }}
+              </h5>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- POKÉMON -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Especies Pokémon
+              </h6>
+
+              <h3 class="fw-bold">
+                {{ generacion.pokemon_species.length }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LISTAS -->
+
+      <div class="row mt-4 g-4">
+
+
+        <!-- POKÉMON -->
+
+        <div class="col-12 col-lg-6">
+
+          <div class="card h-100">
+
+            <div class="card-header fw-bold">
+              Especies Pokémon
+            </div>
+
+            <div
+              class="card-body"
+              style="max-height: 350px; overflow-y: auto;"
+            >
+
+              <div class="d-flex flex-wrap gap-2">
+
+                <span
+                  *ngFor="let pokemon of generacion.pokemon_species"
+                  class="badge text-bg-secondary text-capitalize"
+                >
+                  {{ pokemon.name }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- HABILIDADES -->
+
+        <div class="col-12 col-lg-6">
+
+          <div class="card h-100">
+
+            <div class="card-header fw-bold">
+              Habilidades
+            </div>
+
+            <div
+              class="card-body"
+              style="max-height: 350px; overflow-y: auto;"
+            >
+
+              <div class="d-flex flex-wrap gap-2">
+
+                <span
+                  *ngFor="let ability of generacion.abilities"
+                  class="badge text-bg-primary text-capitalize"
+                >
+                  {{ ability.name }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- MOVIMIENTOS -->
+
+        <div class="col-12 col-lg-6">
+
+          <div class="card">
+
+            <div class="card-header fw-bold">
+              Movimientos
+            </div>
+
+            <div
+              class="card-body"
+              style="max-height: 300px; overflow-y: auto;"
+            >
+
+              <div class="d-flex flex-wrap gap-2">
+
+                <span
+                  *ngFor="let move of generacion.moves"
+                  class="badge text-bg-success text-capitalize"
+                >
+                  {{ move.name }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- TIPOS -->
+
+        <div class="col-12 col-lg-6">
+
+          <div class="card">
+
+            <div class="card-header fw-bold">
+              Tipos Pokémon
+            </div>
+
+            <div class="card-body">
+
+              <div class="d-flex flex-wrap gap-2">
+
+                <span
+                  *ngFor="let type of generacion.types"
+                  class="badge text-bg-warning text-capitalize"
+                >
+                  {{ type.name }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- VERSIONES -->
+
+      <div class="card mt-4">
+
+        <div class="card-header fw-bold">
+          Grupos de versiones
+        </div>
+
+        <ul class="list-group list-group-flush">
+
+          <li
+            *ngFor="let version of generacion.version_groups"
+            class="list-group-item text-capitalize"
+          >
+            {{ version.name }}
+          </li>
+
+        </ul>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</file>
+
+<file path="src/app/componentes/generaciones/generaciones.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting
+} from '@angular/common/http/testing';
+
+import { Generaciones } from './generaciones';
+
+describe('Generaciones', () => {
+
+  beforeEach(async () => {
+
+    await TestBed.configureTestingModule({
+
+      imports: [
+        Generaciones
+      ],
+
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+
+    }).compileComponents();
+
+  });
+
+
+  it('debe crear el componente', () => {
+
+    const fixture =
+      TestBed.createComponent(Generaciones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component).toBeTruthy();
+
+  });
+
+
+  it('debe iniciar sin error', () => {
+
+    const fixture =
+      TestBed.createComponent(Generaciones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.error).toBe('');
+
+  });
+
+
+  it('debe iniciar sin una generación seleccionada', () => {
+
+    const fixture =
+      TestBed.createComponent(Generaciones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.generacion).toBeNull();
+
+  });
+
+
+  it('debe iniciar sin estar cargando', () => {
+
+    const fixture =
+      TestBed.createComponent(Generaciones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.cargando).toBeFalsy();
+
+  });
+
+
+  it('debe limpiar la información', () => {
+
+    const fixture =
+      TestBed.createComponent(Generaciones);
+
+    const component =
+      fixture.componentInstance;
+
+    component.nombreGeneracion = 'generation-i';
+
+    component.error = 'Error';
+
+    component.limpiar();
+
+    expect(component.nombreGeneracion).toBe('');
+
+    expect(component.error).toBe('');
+
+    expect(component.generacion).toBeNull();
+
+  });
+
+});
+</file>
+
+<file path="src/app/componentes/generaciones/generaciones.ts">
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+interface GenerationData {
+  id: number;
+  name: string;
+
+  main_region: {
+    name: string;
+  };
+
+  pokemon_species: {
+    name: string;
+  }[];
+
+  abilities: {
+    name: string;
+  }[];
+
+  moves: {
+    name: string;
+  }[];
+
+  types: {
+    name: string;
+  }[];
+
+  version_groups: {
+    name: string;
+  }[];
+}
+
+@Component({
+  selector: 'app-generaciones',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './generaciones.html'
+})
+export class Generaciones implements OnInit {
+
+  nombreGeneracion = '';
+
+  generacion: GenerationData | null = null;
+
+  cargando = false;
+
+  error = '';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.buscarGeneracion('generation-i');
+  }
+
+  buscarGeneracion(nombre?: string): void {
+
+    const nombreBusqueda = (
+      nombre ?? this.nombreGeneracion
+    ).trim().toLowerCase();
+
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de una generación.';
+      this.generacion = null;
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.generacion = null;
+
+    this.http
+      .get<GenerationData>(
+        `https://pokeapi.co/api/v2/generation/${nombreBusqueda}`
+      )
+      .subscribe({
+
+        next: (data) => {
+
+          this.generacion = data;
+
+          this.nombreGeneracion = data.name;
+
+          this.cargando = false;
+
+        },
+
+        error: () => {
+
+          this.error = 'No se encontró la generación.';
+
+          this.generacion = null;
+
+          this.cargando = false;
+
+        }
+
+      });
+  }
+
+  limpiar(): void {
+
+    this.nombreGeneracion = '';
+
+    this.generacion = null;
+
+    this.error = '';
+
+  }
+}
+</file>
+
+<file path="src/app/componentes/habilidades/habilidades.css">
+
+</file>
+
+<file path="src/app/componentes/habilidades/habilidades.spec.ts">
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PokemonService {
+
+  private http = inject(HttpClient);
+
+  private URL_BASE = 'https://pokeapi.co/api/v2/';
+
+  getPokemonById(id: string): Observable<any> {
+    return this.http.get<any>(
+      this.URL_BASE + 'pokemon/' + id.toLowerCase().trim()
+    );
+  }
+
+  getPokemonSpecies(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      this.URL_BASE + 'pokemon-species/' + nombre.toLowerCase().trim()
+    );
+  }
+
+  getAbility(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      this.URL_BASE + 'ability/' + nombre.toLowerCase().trim()
+    );
+  }
+}
+</file>
+
+<file path="src/app/componentes/inicio/inicio.css">
+
+</file>
+
+<file path="src/app/componentes/inicio/inicio.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Inicio } from './inicio';
+
+describe('Inicio', () => {
+  let component: Inicio;
+  let fixture: ComponentFixture<Inicio>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Inicio],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(Inicio);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/componentes/inicio/inicio.ts">
+import { Component } from '@angular/core';
+import { RouterLink } from '@angular/router';
+
+@Component({
+  selector: 'app-inicio',
+  imports: [RouterLink],
+  templateUrl: './inicio.html'
+})
+export class Inicio {
+
+}
+</file>
+
+<file path="src/app/componentes/lista-pokemon/lista-pokemon.css">
+
+</file>
+
+<file path="src/app/componentes/lista-pokemon/lista-pokemon.html">
+<p>lista-pokemon works!</p>
+</file>
+
+<file path="src/app/componentes/lista-pokemon/lista-pokemon.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { ListaPokemon } from './lista-pokemon';
+
+describe('ListaPokemon', () => {
+  let component: ListaPokemon;
+  let fixture: ComponentFixture<ListaPokemon>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [ListaPokemon],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(ListaPokemon);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/componentes/lista-pokemon/lista-pokemon.ts">
+import { Component } from '@angular/core';
+
+@Component({
+  imports: [],
+  selector: 'app-lista-pokemon',
+  styleUrl: './lista-pokemon.css',
+  templateUrl: './lista-pokemon.html',
+})
+export class ListaPokemon {}
+</file>
+
+<file path="src/app/componentes/movimientos/movimientos.css">
+
+</file>
+
+<file path="src/app/componentes/movimientos/movimientos.html">
+<div class="container mt-5">
+
+  <h1 class="text-center mb-4">
+    Movimientos Pokémon
+  </h1>
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+      <input
+        type="text"
+        class="form-control mb-3"
+        [(ngModel)]="nombre"
+        (keyup.enter)="buscarMovimiento()"
+        placeholder="Ejemplo: thunderbolt"
+      >
+
+      <button
+        class="btn btn-primary w-100"
+        (click)="buscarMovimiento()">
+
+        Buscar movimiento
+
+      </button>
+
+    </div>
+
+  </div>
+
+  @if (movimiento) {
+
+    <div class="row justify-content-center mt-5">
+
+      <div class="col-md-8">
+
+        <div class="card shadow">
+
+          <div class="card-body">
+
+            <h2 class="card-title text-primary text-center">
+              {{ movimiento.name | uppercase }}
+            </h2>
+
+            <hr>
+
+            <p class="card-text">
+              <strong>ID:</strong>
+              {{ movimiento.id }}
+            </p>
+
+            <p class="card-text">
+              <strong>Tipo:</strong>
+
+              @if (movimiento.type) {
+                {{ movimiento.type.name | uppercase }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Clase de daño:</strong>
+
+              @if (movimiento.damage_class) {
+                {{ movimiento.damage_class.name | uppercase }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Potencia:</strong>
+
+              @if (movimiento.power !== null) {
+                {{ movimiento.power }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Precisión:</strong>
+
+              @if (movimiento.accuracy !== null) {
+                {{ movimiento.accuracy }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>PP:</strong>
+              {{ movimiento.pp ?? 'No disponible' }}
+            </p>
+
+            <p class="card-text">
+              <strong>Prioridad:</strong>
+              {{ movimiento.priority }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
+</file>
+
+<file path="src/app/componentes/movimientos/movimientos.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Movimientos } from './movimientos';
+
+describe('Movimientos', () => {
+  let component: Movimientos;
+  let fixture: ComponentFixture<Movimientos>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Movimientos],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(Movimientos);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/componentes/movimientos/movimientos.ts">
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { UpperCasePipe } from '@angular/common';
+import { PokemonService } from '../../services/pokemon-service';
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'app-movimientos',
+  standalone: true,
+  imports: [FormsModule, UpperCasePipe],
+  templateUrl: './movimientos.html',
+  styleUrl: './movimientos.css'
+})
+export class Movimientos {
+
+  private pokemonService = inject(PokemonService);
+
+  nombre: string = '';
+  movimiento: any = null;
+
+  buscarMovimiento(): void {
+
+    if (!this.nombre.trim()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Escribe el nombre de un movimiento'
+      });
+
+      return;
+    }
+
+    this.pokemonService.getMove(this.nombre).subscribe({
+
+      next: (data: any) => {
+        console.log('Movimiento recibido:', data);
+        this.movimiento = data;
+      },
+
+      error: (error: unknown) => {
+        console.error('Error al obtener el movimiento:', error);
+
+        this.movimiento = null;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Movimiento no encontrado',
+          text: 'Verifica el nombre e intenta nuevamente'
+        });
+      }
+
+    });
+  }
+}
+</file>
+
+<file path="src/app/componentes/poke-api/poke-api.css">
+
+</file>
+
+<file path="src/app/componentes/poke-api/poke-api.html">
+<div class="container py-5"> <div class="row justify-content-center"> <div class="col-md-8 col-lg-6">
+
+  <div class="card shadow">
+    <div class="card-body">
+
+      <h2 class="text-center mb-4">
+        Buscador de Pokémon
+      </h2>
+
+      <div class="input-group mb-4">
+        <input
+          type="text"
+          class="form-control"
+          [(ngModel)]="nombrePokemon"
+          (keyup.enter)="buscarPokemon()"
+          placeholder="Ej. pikachu"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarPokemon()">
+          Buscar
+        </button>
+      </div>
+
+      <div *ngIf="cargando" class="text-center">
+        <div class="spinner-border text-primary"></div>
+        <p class="mt-2">Buscando Pokémon...</p>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger text-center">
+        {{ error }}
+      </div>
+
+      <div *ngIf="pokemon && !cargando">
+
+        <div class="text-center">
+          <img
+            [src]="pokemon.sprites.other['official-artwork'].front_default"
+            [alt]="pokemon.name"
+            class="img-fluid"
+            style="max-height: 250px;"
+          >
+        </div>
+
+        <h3 class="text-center text-capitalize">
+          {{ pokemon.name }}
+        </h3>
+
+        <p class="text-center text-muted">
+          Pokémon #{{ pokemon.id }}
+        </p>
+
+        <hr>
+
+        <div class="row text-center">
+
+          <div class="col-6 mb-3">
+            <strong>Altura</strong>
+            <p>{{ pokemon.height / 10 }} m</p>
+          </div>
+
+          <div class="col-6 mb-3">
+            <strong>Peso</strong>
+            <p>{{ pokemon.weight / 10 }} kg</p>
+          </div>
+
+          <div class="col-12 mb-3">
+            <strong>Experiencia base</strong>
+            <p>{{ pokemon.base_experience }}</p>
+          </div>
+
+        </div>
+
+        <div class="mb-3">
+          <strong>Tipo</strong>
+
+          <div class="mt-2">
+            <span
+              *ngFor="let tipo of pokemon.types"
+              class="badge bg-primary me-2 text-capitalize">
+              {{ tipo.type.name }}
+            </span>
+          </div>
+        </div>
+
+        <div>
+          <strong>Habilidades</strong>
+
+          <div class="mt-2">
+            <span
+              *ngFor="let habilidad of pokemon.abilities"
+              class="badge bg-secondary me-2 text-capitalize">
+              {{ habilidad.ability.name }}
+            </span>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </div>
+
+</div>
+
+</div> </div>
+</file>
+
+<file path="src/app/componentes/poke-api/poke-api.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import {
+HttpClientTestingModule,
+HttpTestingController
+} from '@angular/common/http/testing';
+
+import { PokeApi } from './poke-api';
+
+describe('PokeApi', () => {
+
+let component: PokeApi;
+let httpMock: HttpTestingController;
+
+beforeEach(async () => {
+
+await TestBed.configureTestingModule({
+  imports: [
+    PokeApi,
+    HttpClientTestingModule
+  ]
+}).compileComponents();
+
+const fixture = TestBed.createComponent(PokeApi);
+
+component = fixture.componentInstance;
+
+httpMock = TestBed.inject(HttpTestingController);
+
+});
+
+afterEach(() => {
+httpMock.verify();
+});
+
+it('debería crear el componente', () => {
+expect(component).toBeTruthy();
+});
+
+it('debería buscar un Pokémon correctamente', () => {
+
+component.nombrePokemon = 'ditto';
+
+component.buscarPokemon();
+
+const request = httpMock.expectOne(
+  'https://pokeapi.co/api/v2/pokemon/ditto'
+);
+
+expect(request.request.method).toBe('GET');
+
+request.flush({
+  id: 132,
+  name: 'ditto',
+  height: 3,
+  weight: 40,
+  base_experience: 101,
+  sprites: {
+    other: {
+      'official-artwork': {
+        front_default:
+          'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/132.png'
+      }
+    }
+  },
+  types: [
+    {
+      type: {
+        name: 'normal'
+      }
+    }
+  ],
+  abilities: [
+    {
+      ability: {
+        name: 'limber'
+      }
+    }
+  ]
+});
+
+expect(component.pokemon.name).toBe('ditto');
+expect(component.pokemon.id).toBe(132);
+expect(component.cargando).toBeFalsy();
+
+});
+
+it('debería mostrar error si no se encuentra el Pokémon', () => {
+
+component.nombrePokemon = 'pokemon-inexistente';
+
+component.buscarPokemon();
+
+const request = httpMock.expectOne(
+  'https://pokeapi.co/api/v2/pokemon/pokemon-inexistente'
+);
+
+request.flush(
+  { message: 'Not Found' },
+  {
+    status: 404,
+    statusText: 'Not Found'
+  }
+);
+
+expect(component.error).toBe(
+  'No se encontró ese Pokémon.'
+);
+
+expect(component.pokemon).toBeNull();
+expect(component.cargando).toBeFalsy();
+
+});
+
+it('debería mostrar error si el buscador está vacío', () => {
+
+component.nombrePokemon = '';
+
+component.buscarPokemon();
+
+expect(component.error).toBe(
+  'Escribe el nombre de un Pokémon.'
+);
+
+expect(component.pokemon).toBeNull();
+
+});
+
+});
+</file>
+
+<file path="src/app/componentes/poke-api/poke-api.ts">
+import { Component, inject, ChangeDetectorRef } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+
+@Component({
+  selector: 'app-poke-api',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './poke-api.html'
+})
+export class PokeApi {
+
+  private http = inject(HttpClient);
+  private cd = inject(ChangeDetectorRef);
+
+  nombrePokemon: string = '';
+  pokemon: any = null;
+  cargando: boolean = false;
+  error: string = '';
+
+  buscarPokemon(): void {
+
+    const nombre = this.nombrePokemon.trim().toLowerCase();
+
+    if (!nombre) {
+      this.error = 'Escribe el nombre de un Pokémon.';
+      this.pokemon = null;
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.pokemon = null;
+
+    this.http
+      .get<any>(`https://pokeapi.co/api/v2/pokemon/${nombre}`)
+      .subscribe({
+        next: (respuesta: any) => {
+
+          console.log('RESPUESTA POKEAPI:', respuesta);
+
+          this.pokemon = respuesta;
+          this.cargando = false;
+
+          this.cd.detectChanges();
+        },
+
+        error: (error: unknown) => {
+
+          console.error('ERROR POKEAPI:', error);
+
+          this.error = 'No se encontró ese Pokémon.';
+          this.pokemon = null;
+          this.cargando = false;
+
+          this.cd.detectChanges();
+        }
+      });
+  }
+}
+</file>
+
+<file path="src/app/componentes/pokedex/pokedex.css">
+
+</file>
+
+<file path="src/app/componentes/pokedex/pokedex.html">
+<div class="container py-4">
+
+  <!-- ENCABEZADO -->
+
+  <div class="text-center mb-4">
+
+    <h1 class="fw-bold">
+      Pokédex
+    </h1>
+
+    <p class="text-muted">
+      Consulta información de las Pokédex disponibles en PokéAPI
+    </p>
+
+  </div>
+
+
+  <!-- BUSCADOR -->
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: national"
+          [(ngModel)]="nombrePokedex"
+          (keyup.enter)="buscarPokedex()"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarPokedex()"
+          [disabled]="cargando"
+        >
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- POKÉDEX RÁPIDAS -->
+
+  <div class="text-center mb-4">
+
+    <p class="text-muted mb-2">
+      Selecciona una Pokédex:
+    </p>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('national')"
+    >
+      National
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('kanto')"
+    >
+      Kanto
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('original-johto')"
+    >
+      Johto
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('hoenn')"
+    >
+      Hoenn
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('original-sinnoh')"
+    >
+      Sinnoh
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('original-unova')"
+    >
+      Unova
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('kalos-central')"
+    >
+      Kalos
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('alola')"
+    >
+      Alola
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarPokedex('galar')"
+    >
+      Galar
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary mb-2"
+      (click)="buscarPokedex('paldea')"
+    >
+      Paldea
+    </button>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+
+  <!-- CARGANDO -->
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+
+  <!-- RESULTADO -->
+
+  <div
+    *ngIf="pokedex && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+
+      <!-- TÍTULO -->
+
+      <div class="text-center mb-4">
+
+        <h2 class="fw-bold text-capitalize">
+          {{ pokedex.name }}
+        </h2>
+
+        <span
+          class="badge"
+          [class.bg-success]="pokedex.is_main_series"
+          [class.bg-secondary]="!pokedex.is_main_series"
+        >
+          {{
+            pokedex.is_main_series
+              ? 'Serie principal'
+              : 'Serie secundaria'
+          }}
+        </span>
+
+      </div>
+
+
+      <!-- INFORMACIÓN GENERAL -->
+
+      <div class="row g-3">
+
+
+        <!-- ID -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                ID
+              </h6>
+
+              <h3 class="fw-bold">
+                #{{ pokedex.id }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- REGIÓN -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Región
+              </h6>
+
+              <h5 class="fw-bold text-capitalize">
+
+                {{
+                  pokedex.region?.name ||
+                  'No disponible'
+                }}
+
+              </h5>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- POKÉMON -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Pokémon registrados
+              </h6>
+
+              <h3 class="fw-bold">
+                {{ pokedex.pokemon_entries.length }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- DESCRIPCIÓN -->
+
+      <div
+        *ngIf="pokedex.descriptions.length > 0"
+        class="card mt-4"
+      >
+
+        <div class="card-header fw-bold">
+          Descripción
+        </div>
+
+        <div class="card-body">
+
+          <p
+            *ngFor="let description of pokedex.descriptions"
+            class="mb-2"
+          >
+
+            {{ description.description }}
+
+          </p>
+
+        </div>
+
+      </div>
+
+
+      <!-- LISTA DE POKÉMON -->
+
+      <div class="card mt-4">
+
+        <div class="card-header fw-bold">
+          Pokémon registrados
+        </div>
+
+        <div
+          class="card-body"
+          style="max-height: 500px; overflow-y: auto;"
+        >
+
+          <div class="row g-2">
+
+            <div
+              *ngFor="let pokemon of pokedex.pokemon_entries"
+              class="col-12 col-sm-6 col-md-4 col-lg-3"
+            >
+
+              <div class="border rounded p-2 h-100">
+
+                <span class="badge bg-secondary me-2">
+                  #{{ pokemon.entry_number }}
+                </span>
+
+                <span class="text-capitalize">
+                  {{ pokemon.pokemon_species.name }}
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</file>
+
+<file path="src/app/componentes/pokedex/pokedex.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting
+} from '@angular/common/http/testing';
+
+import { Pokedex } from './pokedex';
+
+describe('Pokedex', () => {
+
+  beforeEach(async () => {
+
+    await TestBed.configureTestingModule({
+
+      imports: [
+        Pokedex
+      ],
+
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+
+    }).compileComponents();
+
+  });
+
+
+  it('debe crear el componente', () => {
+
+    const fixture =
+      TestBed.createComponent(Pokedex);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component).toBeTruthy();
+
+  });
+
+
+  it('debe iniciar sin error', () => {
+
+    const fixture =
+      TestBed.createComponent(Pokedex);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.error).toBe('');
+
+  });
+
+
+  it('debe iniciar sin una Pokedex seleccionada', () => {
+
+    const fixture =
+      TestBed.createComponent(Pokedex);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.pokedex).toBeNull();
+
+  });
+
+
+  it('debe iniciar sin estar cargando', () => {
+
+    const fixture =
+      TestBed.createComponent(Pokedex);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.cargando).toBeFalsy();
+
+  });
+
+
+  it('debe limpiar la información', () => {
+
+    const fixture =
+      TestBed.createComponent(Pokedex);
+
+    const component =
+      fixture.componentInstance;
+
+    component.nombrePokedex = 'national';
+
+    component.error = 'Error';
+
+    component.limpiar();
+
+    expect(component.nombrePokedex).toBe('');
+
+    expect(component.error).toBe('');
+
+    expect(component.pokedex).toBeNull();
+
+  });
+
+});
+</file>
+
+<file path="src/app/componentes/pokedex/pokedex.ts">
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+interface PokedexData {
+  id: number;
+  name: string;
+  is_main_series: boolean;
+
+  descriptions: {
+    description: string;
+    language: {
+      name: string;
+    };
+  }[];
+
+  pokemon_entries: {
+    entry_number: number;
+    pokemon_species: {
+      name: string;
+    };
+  }[];
+
+  region: {
+    name: string;
+  } | null;
+}
+
+@Component({
+  selector: 'app-pokedex',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './pokedex.html'
+})
+export class Pokedex implements OnInit {
+
+  nombrePokedex = '';
+
+  pokedex: PokedexData | null = null;
+
+  cargando = false;
+
+  error = '';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.buscarPokedex('national');
+  }
+
+  buscarPokedex(nombre?: string): void {
+
+    const nombreBusqueda = (
+      nombre ?? this.nombrePokedex
+    ).trim().toLowerCase();
+
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de una Pokédex.';
+      this.pokedex = null;
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.pokedex = null;
+
+    this.http
+      .get<PokedexData>(
+        `https://pokeapi.co/api/v2/pokedex/${nombreBusqueda}`
+      )
+      .subscribe({
+
+        next: (data) => {
+
+          this.pokedex = data;
+
+          this.nombrePokedex = data.name;
+
+          this.cargando = false;
+
+        },
+
+        error: () => {
+
+          this.error = 'No se encontró la Pokédex.';
+
+          this.pokedex = null;
+
+          this.cargando = false;
+
+        }
+
+      });
+  }
+
+  limpiar(): void {
+
+    this.nombrePokedex = '';
+
+    this.pokedex = null;
+
+    this.error = '';
+
+  }
+}
+</file>
+
+<file path="src/app/componentes/regiones/regiones.css">
+
+</file>
+
+<file path="src/app/componentes/regiones/regiones.html">
+<div class="container py-4">
+
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">
+      Regiones Pokémon
+    </h1>
+
+    <p class="text-muted">
+      Consulta información de las regiones disponibles en PokéAPI
+    </p>
+  </div>
+
+  <!-- BUSCADOR -->
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: kanto"
+          [(ngModel)]="nombreRegion"
+          (keyup.enter)="buscarRegion()"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarRegion()"
+          [disabled]="cargando"
+        >
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- REGIONES RÁPIDAS -->
+
+  <div class="text-center mb-4">
+
+    <p class="text-muted mb-2">
+      Selecciona una región:
+    </p>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('kanto')"
+    >
+      Kanto
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('johto')"
+    >
+      Johto
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('hoenn')"
+    >
+      Hoenn
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('sinnoh')"
+    >
+      Sinnoh
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('unova')"
+    >
+      Unova
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('kalos')"
+    >
+      Kalos
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('alola')"
+    >
+      Alola
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('galar')"
+    >
+      Galar
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary mb-2"
+      (click)="buscarRegion('paldea')"
+    >
+      Paldea
+    </button>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+
+  <!-- CARGANDO -->
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+
+  <!-- INFORMACIÓN DE LA REGIÓN -->
+
+  <div
+    *ngIf="region && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+      <!-- TÍTULO -->
+
+      <div class="text-center mb-4">
+
+        <h2 class="fw-bold text-capitalize">
+          {{ region.name }}
+        </h2>
+
+        <span class="badge bg-primary">
+          Región Pokémon
+        </span>
+
+      </div>
+
+
+      <!-- INFORMACIÓN PRINCIPAL -->
+
+      <div class="row g-3">
+
+        <!-- ID -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                ID
+              </h6>
+
+              <h3 class="fw-bold">
+                #{{ region.id }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- GENERACIÓN -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Generación principal
+              </h6>
+
+              <h5 class="fw-bold text-capitalize">
+
+                {{ region.main_generation?.name || 'No disponible' }}
+
+              </h5>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- POKEDEX -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Pokédex asociadas
+              </h6>
+
+              <h3 class="fw-bold">
+                {{ region.pokedexes.length }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LISTAS -->
+
+      <div class="row mt-4 g-4">
+
+
+        <!-- POKEDEX -->
+
+        <div class="col-12 col-md-6">
+
+          <div class="card h-100">
+
+            <div class="card-header fw-bold">
+              Pokédex
+            </div>
+
+            <ul class="list-group list-group-flush">
+
+              <li
+                *ngFor="let pokedex of region.pokedexes"
+                class="list-group-item text-capitalize"
+              >
+                {{ pokedex.name }}
+              </li>
+
+              <li
+                *ngIf="region.pokedexes.length === 0"
+                class="list-group-item text-muted"
+              >
+                No disponible
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+
+        <!-- VERSIONES -->
+
+        <div class="col-12 col-md-6">
+
+          <div class="card h-100">
+
+            <div class="card-header fw-bold">
+              Grupos de versiones
+            </div>
+
+            <ul class="list-group list-group-flush">
+
+              <li
+                *ngFor="let version of region.version_groups"
+                class="list-group-item text-capitalize"
+              >
+                {{ version.name }}
+              </li>
+
+              <li
+                *ngIf="region.version_groups.length === 0"
+                class="list-group-item text-muted"
+              >
+                No disponible
+              </li>
+
+            </ul>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- UBICACIONES -->
+
+      <div class="card mt-4">
+
+        <div class="card-header fw-bold">
+          Ubicaciones
+        </div>
+
+        <div class="card-body">
+
+          <div class="d-flex flex-wrap gap-2">
+
+            <span
+              *ngFor="let location of region.locations"
+              class="badge text-bg-secondary text-capitalize"
+            >
+              {{ location.name }}
+            </span>
+
+          </div>
+
+          <p
+            *ngIf="region.locations.length === 0"
+            class="text-muted mb-0"
+          >
+            No hay ubicaciones disponibles.
+          </p>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>
+</file>
+
+<file path="src/app/componentes/regiones/regiones.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+import {
+  provideHttpClientTesting
+} from '@angular/common/http/testing';
+
+import { Regiones } from './regiones';
+
+describe('Regiones', () => {
+
+  beforeEach(async () => {
+
+    await TestBed.configureTestingModule({
+
+      imports: [
+        Regiones
+      ],
+
+      providers: [
+        provideHttpClient(),
+        provideHttpClientTesting()
+      ]
+
+    }).compileComponents();
+
+  });
+
+
+  it('debe crear el componente', () => {
+
+    const fixture =
+      TestBed.createComponent(Regiones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component).toBeTruthy();
+
+  });
+
+
+  it('debe iniciar sin error', () => {
+
+    const fixture =
+      TestBed.createComponent(Regiones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.error).toBe('');
+
+  });
+
+
+  it('debe iniciar sin una región seleccionada', () => {
+
+    const fixture =
+      TestBed.createComponent(Regiones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.region).toBeNull();
+
+  });
+
+
+  it('debe iniciar sin estar cargando', () => {
+
+    const fixture =
+      TestBed.createComponent(Regiones);
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.cargando).toBeFalsy();
+
+  });
+
+
+  it('debe limpiar la información', () => {
+
+    const fixture =
+      TestBed.createComponent(Regiones);
+
+    const component =
+      fixture.componentInstance;
+
+    component.nombreRegion = 'kanto';
+    component.error = 'Error';
+
+    component.limpiar();
+
+    expect(component.nombreRegion).toBe('');
+    expect(component.error).toBe('');
+    expect(component.region).toBeNull();
+
+  });
+
+});
+</file>
+
+<file path="src/app/componentes/regiones/regiones.ts">
+import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+
+interface RegionData {
+  id: number;
+  name: string;
+  main_generation: {
+    name: string;
+  } | null;
+  pokedexes: {
+    name: string;
+  }[];
+  locations: {
+    name: string;
+  }[];
+  version_groups: {
+    name: string;
+  }[];
+}
+
+@Component({
+  selector: 'app-regiones',
+  standalone: true,
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
+  templateUrl: './regiones.html'
+})
+export class Regiones implements OnInit {
+
+  nombreRegion = '';
+
+  region: RegionData | null = null;
+
+  cargando = false;
+
+  error = '';
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.buscarRegion('kanto');
+  }
+
+  buscarRegion(nombre?: string): void {
+
+    const nombreBusqueda = (
+      nombre ?? this.nombreRegion
+    ).trim().toLowerCase();
+
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de una región.';
+      this.region = null;
+      return;
+    }
+
+    this.cargando = true;
+    this.error = '';
+    this.region = null;
+
+    this.http
+      .get<RegionData>(
+        `https://pokeapi.co/api/v2/region/${nombreBusqueda}`
+      )
+      .subscribe({
+        next: (data) => {
+          this.region = data;
+          this.cargando = false;
+        },
+
+        error: () => {
+          this.error = 'No se encontró la región.';
+          this.region = null;
+          this.cargando = false;
+        }
+      });
+  }
+
+  limpiar(): void {
+    this.nombreRegion = '';
+    this.region = null;
+    this.error = '';
+  }
+}
+</file>
+
+<file path="src/app/componentes/tipos/tipos.css">
+
+</file>
+
+<file path="src/app/componentes/tipos/tipos.html">
+<p>tipos works!</p>
+</file>
+
+<file path="src/app/componentes/tipos/tipos.spec.ts">
+import { ComponentFixture, TestBed } from '@angular/core/testing';
+import { Tipos } from './tipos';
+
+describe('Tipos', () => {
+  let component: Tipos;
+  let fixture: ComponentFixture<Tipos>;
+
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [Tipos],
+    }).compileComponents();
+
+    fixture = TestBed.createComponent(Tipos);
+    component = fixture.componentInstance;
+    await fixture.whenStable();
+  });
+
+  it('should create', () => {
+    expect(component).toBeTruthy();
+  });
+});
+</file>
+
+<file path="src/app/componentes/tipos/tipos.ts">
+import { Component } from '@angular/core';
+
+@Component({
+  imports: [],
+  selector: 'app-tipos',
+  styleUrl: './tipos.css',
+  templateUrl: './tipos.html',
+})
+export class Tipos {}
+</file>
+
+<file path="src/app/services/poke-api.spec.ts">
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PokemonService {
+
+  private URL_BASE = 'https://pokeapi.co/api/v2/';
+
+  constructor(private http: HttpClient) {}
+
+  getPokemonById(id: string) {
+    return this.http.get(
+      this.URL_BASE + 'pokemon/' + id.toLowerCase().trim()
+    );
+  }
+}
+</file>
+
+<file path="src/app/services/poke-api.ts">
+import { Service } from '@angular/core';
+
+@Service()
+export class PokeApi {}
+</file>
+
+<file path="src/app/services/pokemon-service.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { provideHttpClient } from '@angular/common/http';
+
+import { PokemonService } from './pokemon-service';
+
+describe('PokemonService', () => {
+
+  let service: PokemonService;
+
+  beforeEach(() => {
+    TestBed.configureTestingModule({
+      providers: [
+        provideHttpClient()
+      ]
+    });
+
+    service = TestBed.inject(PokemonService);
+  });
+
+  it('should be created', () => {
+    expect(service).toBeTruthy();
+  });
+
+});
+</file>
+
+<file path="src/app/app.config.server.ts">
+import { mergeApplicationConfig, ApplicationConfig } from '@angular/core';
+import { provideServerRendering, withRoutes } from '@angular/ssr';
+import { appConfig } from './app.config';
+import { serverRoutes } from './app.routes.server';
+
+const serverConfig: ApplicationConfig = {
+  providers: [
+    provideServerRendering(withRoutes(serverRoutes))
+  ]
+};
+
+export const config = mergeApplicationConfig(appConfig, serverConfig);
+</file>
+
+<file path="src/app/app.config.ts">
+import {
+  ApplicationConfig,
+  provideBrowserGlobalErrorListeners
+} from '@angular/core';
+
+import { provideRouter } from '@angular/router';
+import { provideClientHydration } from '@angular/platform-browser';
+import { provideHttpClient } from '@angular/common/http';
+
+import { routes } from './app.routes';
+
+export const appConfig: ApplicationConfig = {
+  providers: [
+    provideBrowserGlobalErrorListeners(),
+    provideRouter(routes),
+    provideClientHydration(),
+    provideHttpClient()
+  ]
+};
+</file>
+
+<file path="src/app/app.css">
+
+</file>
+
+<file path="src/app/app.routes.server.ts">
+import { RenderMode, ServerRoute } from '@angular/ssr';
+
+export const serverRoutes: ServerRoute[] = [
+  {
+    path: '**',
+    renderMode: RenderMode.Prerender
+  }
+];
+</file>
+
+<file path="src/app/app.spec.ts">
+import { TestBed } from '@angular/core/testing';
+import { App } from './app';
+
+describe('App', () => {
+  beforeEach(async () => {
+    await TestBed.configureTestingModule({
+      imports: [App],
+    })
+      .compileComponents();
+  });
+
+  it('should create the app', () => {
+    const fixture = TestBed.createComponent(App);
+    const app = fixture.componentInstance;
+    expect(app).toBeTruthy();
+  });
+
+  it('should render title', async () => {
+    const fixture = TestBed.createComponent(App);
+    await fixture.whenStable();
+    const compiled = fixture.nativeElement as HTMLElement;
+    expect(compiled.querySelector('h1')?.textContent).toContain('Hello, poke-api');
+  });
+});
+</file>
+
+<file path="src/app/app.ts">
+import { Component, signal } from '@angular/core';
+import { RouterOutlet } from '@angular/router';
+
+@Component({
+  imports: [RouterOutlet],
+  selector: 'app-root',
+  styleUrl: './app.css',
+  templateUrl: './app.html',
+})
+export class App {
+  protected readonly title = signal('poke-api');
+}
+</file>
+
+<file path="src/index.html">
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>PokeApi</title>
+  <base href="/">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="icon" type="image/x-icon" href="favicon.ico">
+</head>
+<body>
+  <app-root></app-root>
+</body>
+</html>
+</file>
+
+<file path="src/main.server.ts">
+import { BootstrapContext, bootstrapApplication } from '@angular/platform-browser';
+import { App } from './app/app';
+import { config } from './app/app.config.server';
+
+const bootstrap = (context: BootstrapContext) =>
+    bootstrapApplication(App, config, context);
+
+export default bootstrap;
+</file>
+
+<file path="src/main.ts">
+import { bootstrapApplication } from '@angular/platform-browser';
+import { appConfig } from './app/app.config';
+import { App } from './app/app';
+
+bootstrapApplication(App, appConfig)
+  .catch((err) => console.error(err));
+</file>
+
+<file path="src/server.ts">
+import {
+  AngularNodeAppEngine,
+  createNodeRequestHandler,
+  isMainModule,
+  writeResponseToNodeResponse,
+} from '@angular/ssr/node';
+import express from 'express';
+import { join } from 'node:path';
+
+const browserDistFolder = join(import.meta.dirname, '../browser');
+
+const app = express();
+const angularApp = new AngularNodeAppEngine();
+
+/**
+ * Example Express Rest API endpoints can be defined here.
+ * Uncomment and define endpoints as necessary.
+ *
+ * Example:
+ * ```ts
+ * app.get('/api/{*splat}', (req, res) => {
+ *   // Handle API request
+ * });
+ * ```
+ */
+
+/**
+ * Serve static files from /browser
+ */
+app.use(
+  express.static(browserDistFolder, {
+    maxAge: '1y',
+    index: false,
+    redirect: false,
+  }),
+);
+
+/**
+ * Handle all other requests by rendering the Angular application.
+ */
+app.use((req, res, next) => {
+  angularApp
+    .handle(req)
+    .then((response) =>
+      response ? writeResponseToNodeResponse(response, res) : next(),
+    )
+    .catch(next);
+});
+
+/**
+ * Start the server if this module is the main entry point, or it is ran via PM2.
+ * The server listens on the port defined by the `PORT` environment variable, or defaults to 4000.
+ */
+if (isMainModule(import.meta.url) || process.env['pm_id']) {
+  const port = process.env['PORT'] || 4000;
+  app.listen(port, (error) => {
+    if (error) {
+      throw error;
+    }
+
+    console.log(`Node Express server listening on http://localhost:${port}`);
+  });
+}
+
+/**
+ * Request handler used by the Angular CLI (for dev-server and during build) or Firebase Cloud Functions.
+ */
+export const reqHandler = createNodeRequestHandler(app);
+</file>
+
+<file path="src/styles.css">
+/* You can add global styles to this file, and also import other style files */
+</file>
+
+<file path=".editorconfig">
+# Editor configuration, see https://editorconfig.org
+root = true
+
+[*]
+charset = utf-8
+indent_style = space
+indent_size = 2
+insert_final_newline = true
+trim_trailing_whitespace = true
+
+[*.ts]
+quote_type = single
+ij_typescript_use_double_quotes = false
+
+[*.md]
+max_line_length = off
+trim_trailing_whitespace = false
+</file>
+
+<file path=".gitignore">
+# See https://docs.github.com/get-started/getting-started-with-git/ignoring-files for more about ignoring files.
+
+# Compiled output
+/dist
+/tmp
+/out-tsc
+/bazel-out
+
+# Node
+/node_modules
+npm-debug.log
+yarn-error.log
+
+# IDEs and editors
+.idea/
+.project
+.classpath
+.c9/
+*.launch
+.settings/
+*.sublime-workspace
+
+# Visual Studio Code
+.vscode/*
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+!.vscode/mcp.json
+.history/*
+
+# Miscellaneous
+/.angular/cache
+.sass-cache/
+/connect.lock
+/coverage
+/libpeerconnection.log
+testem.log
+/typings
+__screenshots__/
+
+# System files
+.DS_Store
+Thumbs.db
+</file>
+
+<file path=".prettierrc">
+{
+  "printWidth": 100,
+  "singleQuote": true,
+  "overrides": [
+    {
+      "files": "*.html",
+      "options": {
+        "parser": "angular"
+      }
+    }
+  ]
+}
+</file>
+
+<file path="README.md">
+# PokeApi
+
+This project was generated using [Angular CLI](https://github.com/angular/angular-cli) version 22.1.6.
+
+## Development server
+
+To start a local development server, run:
+
+```bash
+ng serve
+```
+
+Once the server is running, open your browser and navigate to `http://localhost:4200/`. The application will automatically reload whenever you modify any of the source files.
+
+## Code scaffolding
+
+Angular CLI includes powerful code scaffolding tools. To generate a new component, run:
+
+```bash
+ng generate component component-name
+```
+
+For a complete list of available schematics (such as `components`, `directives`, or `pipes`), run:
+
+```bash
+ng generate --help
+```
+
+## Building
+
+To build the project run:
+
+```bash
+ng build
+```
+
+This will compile your project and store the build artifacts in the `dist/` directory. By default, the production build optimizes your application for performance and speed.
+
+## Running unit tests
+
+To execute unit tests with the [Vitest](https://vitest.dev/) test runner, use the following command:
+
+```bash
+ng test
+```
+
+## Running end-to-end tests
+
+For end-to-end (e2e) testing, run:
+
+```bash
+ng e2e
+```
+
+Angular CLI does not come with an end-to-end testing framework by default. You can choose one that suits your needs.
+
+## Additional Resources
+
+For more information on using the Angular CLI, including detailed command references, visit the [Angular CLI Overview and Command Reference](https://angular.dev/tools/cli) page.
+</file>
+
+<file path="tsconfig.app.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "node"
+    ]
+  },
+  "include": [
+    "src/**/*.ts"
+  ],
+  "exclude": [
+    "src/**/*.spec.ts"
+  ]
+}
+</file>
+
+<file path="tsconfig.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "compileOnSave": false,
+  "compilerOptions": {
+    "noImplicitOverride": true,
+    "noPropertyAccessFromIndexSignature": true,
+    "noImplicitReturns": true,
+    "noFallthroughCasesInSwitch": true,
+    "skipLibCheck": true,
+    "isolatedModules": true,
+    "experimentalDecorators": true,
+    "importHelpers": true,
+    "target": "ES2022",
+    "module": "preserve"
+  },
+  "angularCompilerOptions": {
+    "enableI18nLegacyMessageIdFormat": false,
+    "strictInjectionParameters": true,
+    "strictInputAccessModifiers": true
+  },
+  "files": [],
+  "references": [
+    {
+      "path": "./tsconfig.app.json"
+    },
+    {
+      "path": "./tsconfig.spec.json"
+    }
+  ]
+}
+</file>
+
+<file path="tsconfig.spec.json">
+/* To learn more about Typescript configuration file: https://www.typescriptlang.org/docs/handbook/tsconfig-json.html. */
+/* To learn more about Angular compiler options: https://angular.dev/reference/configs/angular-compiler-options. */
+{
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "types": [
+      "vitest/globals"
+    ]
+  },
+  "include": [
+    "src/**/*.d.ts",
+    "src/**/*.spec.ts"
+  ]
+}
+</file>
+
+<file path="src/app/componentes/inicio/inicio.html">
+<div class="container mt-5">
+
+  <div class="text-center mb-5">
+
+    <h1 class="display-4 fw-bold">
+      PokéAPI
+    </h1>
+
+    <p class="lead">
+      Aplicación de consulta de información Pokémon
+    </p>
+
+  </div>
+
+
+  <div class="row g-4">
+
+    <!-- Pokémon -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Pokémon
+          </h3>
+
+          <p class="card-text">
+            Consulta información de Pokémon.
+          </p>
+
+          <a
+            routerLink="/pokemon"
+            class="btn btn-primary">
+
+            Ver Pokémon
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Habilidades -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Habilidades
+          </h3>
+
+          <p class="card-text">
+            Consulta las habilidades de Pokémon.
+          </p>
+
+          <a
+            routerLink="/habilidades"
+            class="btn btn-primary">
+
+            Ver habilidades
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Movimientos -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Movimientos
+          </h3>
+
+          <p class="card-text">
+            Consulta movimientos Pokémon.
+          </p>
+
+          <a
+            routerLink="/movimientos"
+            class="btn btn-primary">
+
+            Ver movimientos
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Tipos -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Tipos
+          </h3>
+
+          <p class="card-text">
+            Consulta los tipos de Pokémon.
+          </p>
+
+          <a
+            routerLink="/tipos"
+            class="btn btn-primary">
+
+            Ver tipos
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Especies -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Especies
+          </h3>
+
+          <p class="card-text">
+            Consulta información de especies.
+          </p>
+
+          <a
+            routerLink="/especies"
+            class="btn btn-primary">
+
+            Ver especies
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Regiones -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Regiones
+          </h3>
+
+          <p class="card-text">
+            Consulta las regiones Pokémon.
+          </p>
+
+          <a
+            routerLink="/regiones"
+            class="btn btn-primary">
+
+            Ver regiones
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Generaciones -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Generaciones
+          </h3>
+
+          <p class="card-text">
+            Consulta las generaciones.
+          </p>
+
+          <a
+            routerLink="/generaciones"
+            class="btn btn-primary">
+
+            Ver generaciones
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Pokédex -->
+    <div class="col-md-4">
+
+      <div class="card h-100 shadow">
+
+        <div class="card-body text-center">
+
+          <h3 class="card-title">
+            Pokédex
+          </h3>
+
+          <p class="card-text">
+            Consulta las Pokédex disponibles.
+          </p>
+
+          <a
+            routerLink="/pokedex"
+            class="btn btn-primary">
+
+            Ver Pokédex
+
+          </a>
+
+        </div>
+
+      </div>
+
+    </div>
+
+
+    <!-- Evolución -->
+<div class="col-md-4">
+
+  <div class="card h-100 shadow">
+
+    <div class="card-body text-center">
+
+      <h3 class="card-title">
+        Evolución
+      </h3>
+
+      <p class="card-text">
+        Consulta cadenas evolutivas.
+      </p>
+
+      <a
+        routerLink="/evolucion"
+        class="btn btn-primary">
+
+        Ver evolución
+
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- Detalle Pokémon -->
+<div class="col-md-4">
+
+  <div class="card h-100 shadow">
+
+    <div class="card-body text-center">
+
+      <h3 class="card-title">
+        Detalle Pokémon
+      </h3>
+
+      <p class="card-text">
+        Consulta información detallada de un Pokémon.
+      </p>
+
+      <a
+        routerLink="/detalle-pokemon"
+        class="btn btn-primary">
+
+        Ver detalle
+
+      </a>
+
+    </div>
+
+  </div>
+
+</div>
+
+
+</div>
+
+</div>
+</file>
+
+<file path="src/app/app.html">
+<router-outlet></router-outlet>
+</file>
+
+<file path="angular.json">
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "cli": {
+    "packageManager": "npm"
+  },
+  "newProjectRoot": "projects",
+  "projects": {
+    "poke-api": {
+      "projectType": "application",
+      "schematics": {},
+      "root": "",
+      "sourceRoot": "src",
+      "prefix": "app",
+      "architect": {
+        "build": {
+          "builder": "@angular/build:application",
+          "options": {
+            "browser": "src/main.ts",
+            "tsConfig": "tsconfig.app.json",
+            "assets": [
+              {
+                "glob": "**/*",
+                "input": "public"
+              }
+            ],
+            "styles": [
+  "node_modules/bootstrap/dist/css/bootstrap.min.css",
+  "node_modules/bootstrap-icons/font/bootstrap-icons.css",
+  "src/styles.css"
+]
+            ,
+            "server": "src/main.server.ts",
+            "outputMode": "server",
+            "security": {
+              "allowedHosts": []
+            },
+            "ssr": {
+              "entry": "src/server.ts"
+            }
+          },
+          "configurations": {
+            "production": {
+              "budgets": [
+                {
+                  "type": "initial",
+                  "maximumWarning": "500kB",
+                  "maximumError": "1MB"
+                },
+                {
+                  "type": "anyComponentStyle",
+                  "maximumWarning": "4kB",
+                  "maximumError": "8kB"
+                }
+              ],
+              "outputHashing": "all"
+            },
+            "development": {
+              "optimization": false,
+              "extractLicenses": false,
+              "sourceMap": true
+            }
+          },
+          "defaultConfiguration": "production"
+        },
+        "serve": {
+          "builder": "@angular/build:dev-server",
+          "configurations": {
+            "production": {
+              "buildTarget": "poke-api:build:production"
+            },
+            "development": {
+              "buildTarget": "poke-api:build:development"
+            }
+          },
+          "defaultConfiguration": "development"
+        },
+        "test": {
+          "builder": "@angular/build:unit-test"
+        }
+        
+      }
+    }
+  }
+}
+</file>
+
+<file path="package.json">
+{
+  "name": "poke-api",
+  "version": "0.0.0",
+  "scripts": {
+    "ng": "ng",
+    "start": "ng serve",
+    "build": "ng build",
+    "watch": "ng build --watch --configuration development",
+    "test": "ng test",
+    "serve:ssr:poke-api": "node dist/poke-api/server/server.mjs"
+  },
+  "private": true,
+  "packageManager": "npm@11.19.0",
+  "dependencies": {
+    "@angular/common": "^22.1.0",
+    "@angular/compiler": "^22.1.0",
+    "@angular/core": "^22.1.0",
+    "@angular/forms": "^22.1.0",
+    "@angular/platform-browser": "^22.1.0",
+    "@angular/platform-server": "^22.1.0",
+    "@angular/router": "^22.1.0",
+    "@angular/ssr": "^22.1.6",
+    "bootstrap": "^5.3.8",
+    "bootstrap-icons": "^1.13.1",
+    "express": "^5.1.0",
+    "rxjs": "~7.8.0",
+    "sweetalert2": "^11.26.25",
+    "tslib": "^2.3.0"
+  },
+  "devDependencies": {
+    "@angular/build": "^22.1.6",
+    "@angular/cli": "^22.1.6",
+    "@angular/compiler-cli": "^22.1.0",
+    "@types/express": "^5.0.1",
+    "@types/node": "^20.17.19",
+    "jsdom": "^28.0.0",
+    "prettier": "^3.8.1",
+    "typescript": "~6.0.2",
+    "vitest": "^4.0.8"
+  }
+}
+</file>
+
+<file path="src/app/componentes/especies/especies.html">
+<div class="container mt-5">
+
+  <h1 class="text-center mb-4">
+    Especies Pokémon
+  </h1>
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+      <input
+        type="text"
+        class="form-control mb-3"
+        [(ngModel)]="nombre"
+        placeholder="Ejemplo: pikachu">
+
+      <button
+        class="btn btn-primary w-100"
+        (click)="buscarEspecie()">
+
+        Buscar especie
+
+      </button>
+
+    </div>
+
+  </div>
+
+  @if (especie) {
+
+    <div class="row justify-content-center mt-5">
+
+      <div class="col-md-8">
+
+        <div class="card shadow">
+
+          <div class="card-body">
+
+            <h2 class="card-title text-primary">
+              {{ especie.name | uppercase }}
+            </h2>
+
+            <p class="card-text">
+              <strong>ID:</strong>
+              {{ especie.id }}
+            </p>
+
+            <p class="card-text">
+              <strong>Generación:</strong>
+              {{ especie.generation.name }}
+            </p>
+
+            <p class="card-text">
+              <strong>Hábitat:</strong>
+
+              @if (especie.habitat) {
+                {{ especie.habitat.name }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Color:</strong>
+              {{ especie.color.name }}
+            </p>
+
+            <p class="card-text">
+              <strong>Forma:</strong>
+              {{ especie.shape.name }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>
+</file>
+
+<file path="src/app/componentes/habilidades/habilidades.html">
+<div class="container mt-5">
+    <h1 class="text-center mb-4">Habilidades Pokemon</h1>
+    <div class=" row justify-content-center">
+        <div clas="col-md-6">
+            <input 
+            type="text"
+            class="form-control mb-3"
+            [(ngModel)]="nombre"
+            placeholder="Ingrese el nombre de la habilidad">
+
+            <button
+            class="btn btn-primary w-100"
+            (click)="buscarHabilidad()">
+                Buscar Habilidad
+            </button>
+        </div>
+    </div>
+
+    @if (habilidad){
+        <div class="row justify-content-center mt-5">
+        <div class="col-md-8">
+            <div class="card shadow">
+                <div class="card-body">
+                    <h2 class="card-title text-primary">
+                        {{ habilidad.name | uppercase }}
+                    </h2>
+                    <p class="card-text">
+                        <strong>ID:</strong>
+                        {{ habilidad.id }}
+                    </p>
+
+                    <p class="card-text">
+                        <strong>Generación:</strong>
+                        {{ habilidad.generation.name}}
+                    </p>
+                    <h5 class="mt-4">
+                        Efecto:
+                    </h5>
+                    @for (efecto of habilidad.effect_entries; track efecto.lenguage.name){
+                        @if (efecto.lenguage.name == "es") {
+                            <p>
+                                {{ efecto.efect}}
+                            </p>
+                        }
+                    }
+                </div>
+            </div>
+        </div>
+        </div>
+    }
+</file>
+
+<file path="src/app/componentes/habilidades/habilidades.ts">
+import { Component, inject } from '@angular/core';
+import { FormsModule } from '@angular/forms';
+import { UpperCasePipe } from '@angular/common';
+import { PokemonService } from '../../services/pokemon-service';
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'app-habilidades',
+  standalone: true,
+  imports: [FormsModule, UpperCasePipe],
+  styleUrl: './habilidades.css',
+  templateUrl: './habilidades.html'
+})
+export class Habilidades {
+
+  private pokemonService = inject(PokemonService);
+
+  nombre: string = '';
+  habilidad: any = null;
+
+  buscarHabilidad(): void {
+
+    if (!this.nombre.trim()) {
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Escribe el nombre de una habilidad'
+      });
+
+      return;
+    }
+
+    this.pokemonService.getAbility(this.nombre).subscribe({
+      next: (data: any) => {
+        this.habilidad = data;
+      },
+
+      error: (error: unknown) => {
+        console.error('Error al obtener la habilidad:', error);
+
+        this.habilidad = null;
+
+        Swal.fire({
+          icon: 'error',
+          title: 'Habilidad no encontrada',
+          text: 'Intenta nuevamente'
+        });
+      }
+    });
+  }
+}
+</file>
+
+<file path="src/app/services/pokemon-service.ts">
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+
+@Injectable({
+  providedIn: 'root'
+})
+export class PokemonService {
+
+  private http = inject(HttpClient);
+
+  private URL_BASE = 'https://pokeapi.co/api/v2/';
+
+  getPokemonById(id: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.URL_BASE}pokemon/${id.toLowerCase().trim()}`
+    );
+  }
+
+  getPokemonSpecies(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.URL_BASE}pokemon-species/${nombre.toLowerCase().trim()}`
+    );
+  }
+
+  getAbility(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.URL_BASE}ability/${nombre.toLowerCase().trim()}`
+    );
+  }
+
+  getMove(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.URL_BASE}move/${nombre.toLowerCase().trim()}`
+    );
+  }
+}
+</file>
+
+<file path="src/app/app.routes.ts">
+import { Routes } from '@angular/router';
+import { Especies } from './componentes/especies/especies';
+import { Habilidades } from './componentes/habilidades/habilidades';
+import { Inicio } from './componentes/inicio/inicio';
+import { Evolucion } from './componentes/evolucion/evolucion';
+import { Generaciones } from './componentes/generaciones/generaciones';
+import { Movimientos } from './componentes/movimientos/movimientos';
+import { Pokedex } from './componentes/pokedex/pokedex'; 
+import { Regiones } from './componentes/regiones/regiones';
+import { Tipos  } from './componentes/tipos/tipos';
+import {PokeApi} from './componentes/poke-api/poke-api'
+import { DetallePokemon } from './componentes/detalle-pokemon/detalle-pokemon';
+
+export const routes: Routes = [
+  {
+    path: '',
+    component: Inicio
+  },
+  {
+    path: 'habilidades',
+    component: Habilidades
+  },
+  {
+    path: 'especies',
+    component: Especies
+  },
+  {
+    path:'evolucion',
+    component:Evolucion
+  },
+  {
+    path:'generaciones',
+    component:Generaciones
+  },
+{
+  path: 'movimientos',
+  component: Movimientos
+},
+  {
+    path:'pokedex',
+    component:Pokedex
+  },
+  {
+    path:'regiones',
+    component:Regiones
+  },
+  {
+    path:'tipos',
+    component:Tipos
+  },
+  {
+    path:'pokemon',
+    component:PokeApi
+  },
+{
+  path: 'detalle-pokemon/:id',
+  component: DetallePokemon
+}
+];
+</file>
+
+<file path="src/app/componentes/especies/especies.ts">
+import { Component, inject } from '@angular/core';
+import { UpperCasePipe } from '@angular/common';
+import { FormsModule } from '@angular/forms';
+import { PokemonService } from '../../services/pokemon-service';
+import Swal from 'sweetalert2';
+
+@Component({
+  selector: 'app-especies',
+  imports: [FormsModule, UpperCasePipe],
+  templateUrl: './especies.html'
+})
+export class Especies {
+
+  private pokemonService = inject(PokemonService);
+
+  nombre = '';
+  especie: any = null;
+
+  buscarEspecie() {
+
+    if (!this.nombre.trim()) {
+
+      Swal.fire({
+        icon: 'warning',
+        title: 'Campo vacío',
+        text: 'Escribe el nombre de un Pokémon'
+      });
+
+      return;
+    }
+
+    this.pokemonService.getPokemonSpecies(this.nombre)
+      .subscribe({
+        next: (data: any) => {
+          console.log(data);
+          this.especie = data;
+        },
+
+        error: (error) => {
+
+          console.error(error);
+
+          this.especie = null;
+
+          Swal.fire({
+            icon: 'error',
+            title: 'Especie no encontrada',
+            text: 'Intenta nuevamente'
+          });
+
+        }
+      });
+  }
+}
+</file>
+
+</files>
