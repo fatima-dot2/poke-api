@@ -1,1 +1,381 @@
-<p>detalle-pokemon works!</p>
+<div class="container py-4">
+
+  <div class="text-center mb-4">
+
+    <h1 class="fw-bold">
+      Detalle Pokémon
+    </h1>
+
+    <p class="text-muted">
+      Busca y consulta información detallada de cualquier Pokémon
+    </p>
+
+  </div>
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Buscar Pokémon..."
+          [(ngModel)]="busqueda"
+          (input)="filtrarPokemon()"
+        >
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiarBusqueda()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+  >
+    {{ error }}
+  </div>
+
+  <div
+    *ngIf="cargandoLista"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Cargando lista de Pokémon...
+    </p>
+
+  </div>
+
+  <div
+    *ngIf="!cargandoLista"
+    class="row g-4"
+  >
+
+    <div class="col-12 col-lg-5">
+
+      <div class="card shadow-sm border-0">
+
+        <div class="card-header fw-bold">
+
+          Pokémon
+
+          <span class="badge bg-primary float-end">
+            {{ pokemonFiltrados.length }}
+          </span>
+
+        </div>
+
+        <div
+          class="list-group list-group-flush"
+          style="max-height: 650px; overflow-y: auto;"
+        >
+
+          <button
+            *ngFor="let item of pokemonFiltrados"
+            type="button"
+            class="list-group-item list-group-item-action text-capitalize text-start"
+            (click)="seleccionarPokemon(item.name)"
+          >
+
+            {{ item.name }}
+
+          </button>
+
+          <div
+            *ngIf="pokemonFiltrados.length === 0"
+            class="text-center p-4 text-muted"
+          >
+
+            No se encontraron Pokémon.
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+    <div class="col-12 col-lg-7">
+
+      <div
+        *ngIf="cargandoDetalle"
+        class="card shadow-sm border-0"
+      >
+
+        <div class="card-body text-center py-5">
+
+          <div
+            class="spinner-border text-primary"
+            role="status"
+          ></div>
+
+          <p class="mt-3 text-muted">
+            Cargando información...
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        *ngIf="!pokemon && !cargandoDetalle"
+        class="card shadow-sm border-0"
+      >
+
+        <div class="card-body text-center py-5">
+
+          <h3 class="text-muted">
+            Selecciona un Pokémon
+          </h3>
+
+          <p class="text-muted mb-0">
+            Selecciona uno de la lista para ver sus detalles.
+          </p>
+
+        </div>
+
+      </div>
+
+      <div
+        *ngIf="pokemon && !cargandoDetalle"
+        class="card shadow-sm border-0"
+      >
+
+        <div class="card-body">
+
+          <div class="text-center mb-4">
+
+            <h2 class="fw-bold text-capitalize">
+              {{ pokemon.name }}
+            </h2>
+
+            <span class="badge bg-secondary">
+              #{{ pokemon.id }}
+            </span>
+
+            <div class="mt-3">
+
+              <img
+                [src]="obtenerImagen()"
+                [alt]="pokemon.name"
+                class="img-fluid"
+                style="max-height: 280px;"
+              >
+
+            </div>
+
+          </div>
+
+          <div class="row g-3 mb-4">
+
+            <div class="col-12 col-md-4">
+
+              <div class="card bg-light border-0 h-100">
+
+                <div class="card-body text-center">
+
+                  <small class="text-muted">
+                    Altura
+                  </small>
+
+                  <h4 class="fw-bold">
+                    {{ pokemon.height / 10 }} m
+                  </h4>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-12 col-md-4">
+
+              <div class="card bg-light border-0 h-100">
+
+                <div class="card-body text-center">
+
+                  <small class="text-muted">
+                    Peso
+                  </small>
+
+                  <h4 class="fw-bold">
+                    {{ pokemon.weight / 10 }} kg
+                  </h4>
+
+                </div>
+
+              </div>
+
+            </div>
+
+            <div class="col-12 col-md-4">
+
+              <div class="card bg-light border-0 h-100">
+
+                <div class="card-body text-center">
+
+                  <small class="text-muted">
+                    Experiencia
+                  </small>
+
+                  <h4 class="fw-bold">
+                    {{ pokemon.base_experience }}
+                  </h4>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+
+            <div class="card-header fw-bold">
+              Tipos
+            </div>
+
+            <div class="card-body">
+
+              <span
+                *ngFor="let tipo of pokemon.types"
+                class="badge bg-primary me-2 text-capitalize"
+              >
+                {{ tipo.type.name }}
+              </span>
+
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+
+            <div class="card-header fw-bold">
+              Habilidades
+            </div>
+
+            <div class="card-body">
+
+              <div
+                *ngFor="let habilidad of pokemon.abilities"
+                class="mb-2 text-capitalize"
+              >
+
+                {{ habilidad.ability.name }}
+
+                <span
+                  *ngIf="habilidad.is_hidden"
+                  class="badge bg-secondary ms-2"
+                >
+                  Oculta
+                </span>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card mb-3">
+
+            <div class="card-header fw-bold">
+              Estadísticas
+            </div>
+
+            <div class="card-body">
+
+              <div
+                *ngFor="let estadistica of pokemon.stats"
+                class="mb-3"
+              >
+
+                <div class="d-flex justify-content-between">
+
+                  <span class="text-capitalize">
+                    {{ estadistica.stat.name }}
+                  </span>
+
+                  <strong>
+                    {{ estadistica.base_stat }}
+                  </strong>
+
+                </div>
+
+                <div class="progress">
+
+                  <div
+                    class="progress-bar"
+                    role="progressbar"
+                    [style.width.%]="
+                      (estadistica.base_stat / 255) * 100
+                    "
+                  ></div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+          <div class="card">
+
+            <div class="card-header fw-bold">
+              Movimientos
+            </div>
+
+            <div
+              class="card-body"
+              style="max-height: 300px; overflow-y: auto;"
+            >
+
+              <div class="row g-2">
+
+                <div
+                  *ngFor="let movimiento of pokemon.moves"
+                  class="col-12 col-sm-6 col-md-4"
+                >
+
+                  <div
+                    class="border rounded p-2 text-capitalize"
+                  >
+                    {{ movimiento.move.name }}
+                  </div>
+
+                </div>
+
+              </div>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

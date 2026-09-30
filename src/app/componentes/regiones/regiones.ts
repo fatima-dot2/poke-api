@@ -1,104 +1,87 @@
-import { Component, OnInit, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
-import Swal from 'sweetalert2';
+import { Component, OnInit } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-interface Region {
-  name: string;
-  url: string;
+interface RegionData {
   id: number;
-  image: string;
+  name: string;
+  main_generation: {
+    name: string;
+  } | null;
+  pokedexes: {
+    name: string;
+  }[];
+  locations: {
+    name: string;
+  }[];
+  version_groups: {
+    name: string;
+  }[];
 }
 
 @Component({
   selector: 'app-regiones',
   standalone: true,
-  imports: [CommonModule],
+  imports: [
+    CommonModule,
+    FormsModule
+  ],
   templateUrl: './regiones.html'
 })
 export class Regiones implements OnInit {
 
-  regiones: Region[] = [];
-  cargando: boolean = true;
+  nombreRegion = '';
 
-  private http = inject(HttpClient);
+  region: RegionData | null = null;
+
+  cargando = false;
+
+  error = '';
+
+  constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.obtenerRegiones();
+    this.buscarRegion('kanto');
   }
 
-  obtenerRegiones(): void {
-    this.http.get<any>('https://pokeapi.co/api/v2/region/').subscribe({
-      next: (data) => {
+  buscarRegion(nombre?: string): void {
 
-        this.regiones = data.results.map((region: any) => {
+    const nombreBusqueda = (
+      nombre ?? this.nombreRegion
+    ).trim().toLowerCase();
 
-          const partes = region.url.split('/').filter(Boolean);
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de una región.';
+      this.region = null;
+      return;
+    }
 
-          return {
-            name: region.name,
-            url: region.url,
-            id: Number(partes[partes.length - 1]),
-            image: this.obtenerImagenRegion(region.name)
-          };
+    this.cargando = true;
+    this.error = '';
+    this.region = null;
 
-        });
+    this.http
+      .get<RegionData>(
+        `https://pokeapi.co/api/v2/region/${nombreBusqueda}`
+      )
+      .subscribe({
+        next: (data) => {
+          this.region = data;
+          this.cargando = false;
+        },
 
-        this.cargando = false;
-      },
-
-      error: () => {
-
-        this.cargando = false;
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudieron cargar las regiones.'
-        });
-
-      }
-    });
+        error: () => {
+          this.error = 'No se encontró la región.';
+          this.region = null;
+          this.cargando = false;
+        }
+      });
   }
 
-  private obtenerImagenRegion(nombre: string): string {
-
-    const imagenes: { [key: string]: string } = {
-
-      kanto: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/1.png',
-
-      johto: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/152.png',
-
-      hoenn: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/252.png',
-
-      sinnoh: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/387.png',
-
-      unova: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/495.png',
-
-      kalos: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/650.png',
-
-      alola: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/722.png',
-
-      galar: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/810.png',
-
-      hisui: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/155.png',
-
-      paldea: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/906.png',
-
-orre: 'https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/133.png'
-    };
-
-    return imagenes[nombre.toLowerCase()] || '';
-  }
-
-  mostrarRegion(region: Region): void {
-
-    Swal.fire({
-      icon: 'info',
-      title: region.name.toUpperCase(),
-      text: `ID de la región: ${region.id}`,
-      confirmButtonText: 'Aceptar'
-    });
-
+  limpiar(): void {
+    this.nombreRegion = '';
+    this.region = null;
+    this.error = '';
   }
 }

@@ -1,13 +1,34 @@
 import { CommonModule } from '@angular/common';
-import { Component, inject } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
-import Swal from 'sweetalert2';
+import { Component } from '@angular/core';
+import { FormsModule } from '@angular/forms';
 
-interface PokemonEvolution {
-  name: string;
-  id: number;
-  image: string;
+interface PokemonSpecies {
+  evolution_chain: {
+    url: string;
+  } | null;
+}
+
+interface EvolutionDetail {
+  min_level: number | null;
+  item: {
+    name: string;
+  } | null;
+  trigger: {
+    name: string;
+  };
+}
+
+interface EvolutionNode {
+  species: {
+    name: string;
+  };
+  evolves_to: EvolutionNode[];
+  evolution_details: EvolutionDetail[];
+}
+
+interface EvolutionChain {
+  chain: EvolutionNode;
 }
 
 @Component({
@@ -18,115 +39,104 @@ interface PokemonEvolution {
 })
 export class Evolucion {
 
-  pokemonName: string = '';
-  evoluciones: PokemonEvolution[] = [];
-  cargando: boolean = false;
+  nombrePokemon = '';
+  evoluciones: {
+    nombre: string;
+    nivel: number | null;
+    item: string | null;
+    trigger: string;
+  }[] = [];
 
-  private http = inject(HttpClient);
+  cargando = false;
+  error = '';
 
-  private apiUrl = 'https://pokeapi.co/api/v2';
+  constructor(private http: HttpClient) {}
 
-  buscarEvoluciones(): void {
+  buscarEvolucion(nombre?: string): void {
 
-    const nombre = this.pokemonName.trim().toLowerCase();
+    const nombreBusqueda = (
+      nombre ?? this.nombrePokemon
+    ).trim().toLowerCase();
 
-    if (!nombre) {
-      Swal.fire({
-        icon: 'warning',
-        title: 'Campo vacío',
-        text: 'Escribe el nombre de un Pokémon.'
-      });
-
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de un Pokémon.';
+      this.evoluciones = [];
       return;
     }
 
     this.cargando = true;
+    this.error = '';
     this.evoluciones = [];
+    this.nombrePokemon = nombreBusqueda;
 
-    // Buscar el Pokémon
     this.http
-      .get<any>(`${this.apiUrl}/pokemon-species/${nombre}`)
+      .get<PokemonSpecies>(
+        `https://pokeapi.co/api/v2/pokemon-species/${nombreBusqueda}`
+      )
       .subscribe({
 
-        next: (pokemon) => {
+        next: especie => {
 
-          // Obtener la cadena de evolución
+          if (!especie.evolution_chain) {
+            this.error = 'Este Pokémon no tiene una cadena de evolución.';
+            this.cargando = false;
+            return;
+          }
+
           this.http
-            .get<any>(pokemon.evolution_chain.url)
+            .get<EvolutionChain>(especie.evolution_chain.url)
             .subscribe({
 
-              next: (cadena) => {
+              next: cadena => {
 
-                this.obtenerEvoluciones(cadena.chain);
+                this.procesarCadena(cadena.chain);
 
                 this.cargando = false;
-
               },
 
               error: () => {
-                this.mostrarError();
+
+                this.error =
+                  'No se pudo obtener la cadena de evolución.';
+
+                this.cargando = false;
               }
 
             });
-
         },
 
         error: () => {
-          this.mostrarError();
+
+          this.error = 'No se encontró el Pokémon.';
+
+          this.cargando = false;
         }
 
       });
   }
 
-  private obtenerEvoluciones(cadena: any): void {
+  private procesarCadena(
+    nodo: EvolutionNode
+  ): void {
 
-    this.evoluciones = [];
+    const detalle = nodo.evolution_details?.[0];
 
-    let actual = cadena;
-
-    while (actual) {
-
-      const url = actual.species.url;
-
-      const id = Number(
-        url.split('/').filter(Boolean).pop()
-      );
-
-      this.evoluciones.push({
-
-        name: actual.species.name,
-
-        id: id,
-
-        image:
-          `https://raw.githubusercontent.com/PokeAPI/sprites/master/sprites/pokemon/other/official-artwork/${id}.png`
-
-      });
-
-      if (
-        actual.evolves_to &&
-        actual.evolves_to.length > 0
-      ) {
-
-        actual = actual.evolves_to[0];
-
-      } else {
-
-        actual = null;
-
-      }
-    }
-  }
-
-  private mostrarError(): void {
-
-    this.cargando = false;
-
-    Swal.fire({
-      icon: 'error',
-      title: 'Pokémon no encontrado',
-      text: 'Verifica el nombre del Pokémon e inténtalo nuevamente.'
+    this.evoluciones.push({
+      nombre: nodo.species.name,
+      nivel: detalle?.min_level ?? null,
+      item: detalle?.item?.name ?? null,
+      trigger: detalle?.trigger?.name ?? 'inicio'
     });
 
+    nodo.evolves_to.forEach(
+      evolucion => this.procesarCadena(evolucion)
+    );
+  }
+
+  limpiar(): void {
+
+    this.nombrePokemon = '';
+    this.evoluciones = [];
+    this.error = '';
   }
 }

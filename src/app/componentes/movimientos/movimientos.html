@@ -1,1 +1,116 @@
-<p>movimientos works!</p>
+<div class="container mt-5">
+
+  <h1 class="text-center mb-4">
+    Movimientos Pokémon
+  </h1>
+
+  <div class="row justify-content-center">
+
+    <div class="col-md-6">
+
+      <input
+        type="text"
+        class="form-control mb-3"
+        [(ngModel)]="nombre"
+        (keyup.enter)="buscarMovimiento()"
+        placeholder="Ejemplo: thunderbolt"
+      >
+
+      <button
+        class="btn btn-primary w-100"
+        (click)="buscarMovimiento()">
+
+        Buscar movimiento
+
+      </button>
+
+    </div>
+
+  </div>
+
+  @if (movimiento) {
+
+    <div class="row justify-content-center mt-5">
+
+      <div class="col-md-8">
+
+        <div class="card shadow">
+
+          <div class="card-body">
+
+            <h2 class="card-title text-primary text-center">
+              {{ movimiento.name | uppercase }}
+            </h2>
+
+            <hr>
+
+            <p class="card-text">
+              <strong>ID:</strong>
+              {{ movimiento.id }}
+            </p>
+
+            <p class="card-text">
+              <strong>Tipo:</strong>
+
+              @if (movimiento.type) {
+                {{ movimiento.type.name | uppercase }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Clase de daño:</strong>
+
+              @if (movimiento.damage_class) {
+                {{ movimiento.damage_class.name | uppercase }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Potencia:</strong>
+
+              @if (movimiento.power !== null) {
+                {{ movimiento.power }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Precisión:</strong>
+
+              @if (movimiento.accuracy !== null) {
+                {{ movimiento.accuracy }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>PP:</strong>
+              {{ movimiento.pp ?? 'No disponible' }}
+            </p>
+
+            <p class="card-text">
+              <strong>Prioridad:</strong>
+              {{ movimiento.priority }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

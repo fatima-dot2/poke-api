@@ -1,14 +1,15 @@
 import { Routes } from '@angular/router';
-
+import { Especies } from './componentes/especies/especies';
+import { Habilidades } from './componentes/habilidades/habilidades';
 import { Inicio } from './componentes/inicio/inicio';
 import { Evolucion } from './componentes/evolucion/evolucion';
-import { Regiones } from './componentes/regiones/regiones';
-import { Habilidades } from './componentes/habilidades/habilidades';
+import { Generaciones } from './componentes/generaciones/generaciones';
 import { Movimientos } from './componentes/movimientos/movimientos';
-import { Tipos } from './componentes/tipos/tipos';
-import { Especies } from './componentes/especies/especies';
-import { ListaPokemon } from './componentes/lista-pokemon/lista-pokemon';
-import { Pokedex } from './componentes/pokedex/pokedex';
+import { Pokedex } from './componentes/pokedex/pokedex'; 
+import { Regiones } from './componentes/regiones/regiones';
+import { Tipos  } from './componentes/tipos/tipos';
+import {PokeApi} from './componentes/poke-api/poke-api'
+import { DetallePokemon } from './componentes/detalle-pokemon/detalle-pokemon';
 
 export const routes: Routes = [
   {
@@ -16,35 +17,43 @@ export const routes: Routes = [
     component: Inicio
   },
   {
-    path: 'pokemon',
-    component: ListaPokemon
-  },
-  {
     path: 'habilidades',
     component: Habilidades
-  },
-  {
-    path: 'movimientos',
-    component: Movimientos
-  },
-  {
-    path: 'tipos',
-    component: Tipos
   },
   {
     path: 'especies',
     component: Especies
   },
   {
-    path: 'regiones',
-    component: Regiones
+    path:'evolucion',
+    component:Evolucion
   },
   {
-    path: 'pokedex',
-    component: Pokedex
+    path:'generaciones',
+    component:Generaciones
+  },
+{
+  path: 'movimientos',
+  component: Movimientos
+},
+  {
+    path:'pokedex',
+    component:Pokedex
   },
   {
-    path: 'evoluciones',
-    component: Evolucion
-  }
+    path:'regiones',
+    component:Regiones
+  },
+  {
+    path:'tipos',
+    component:Tipos
+  },
+  {
+    path:'pokemon',
+    component:PokeApi
+  },
+{
+  path: 'detalle-pokemon',
+  component: DetallePokemon
+}
 ];

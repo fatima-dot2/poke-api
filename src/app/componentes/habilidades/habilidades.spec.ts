@@ -1,21 +1,31 @@
-import { ComponentFixture, TestBed } from '@angular/core/testing';
-import { Habilidades } from './habilidades';
+import { Injectable, inject } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
-describe('Habilidades', () => {
-  let component: Habilidades;
-  let fixture: ComponentFixture<Habilidades>;
+@Injectable({
+  providedIn: 'root'
+})
+export class PokemonService {
 
-  beforeEach(async () => {
-    await TestBed.configureTestingModule({
-      imports: [Habilidades],
-    }).compileComponents();
+  private http = inject(HttpClient);
 
-    fixture = TestBed.createComponent(Habilidades);
-    component = fixture.componentInstance;
-    await fixture.whenStable();
-  });
+  private URL_BASE = 'https://pokeapi.co/api/v2/';
 
-  it('should create', () => {
-    expect(component).toBeTruthy();
-  });
-});
+  getPokemonById(id: string): Observable<any> {
+    return this.http.get<any>(
+      this.URL_BASE + 'pokemon/' + id.toLowerCase().trim()
+    );
+  }
+
+  getPokemonSpecies(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      this.URL_BASE + 'pokemon-species/' + nombre.toLowerCase().trim()
+    );
+  }
+
+  getAbility(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      this.URL_BASE + 'ability/' + nombre.toLowerCase().trim()
+    );
+  }
+}
