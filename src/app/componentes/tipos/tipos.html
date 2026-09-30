@@ -1,1 +1,31 @@
-<p>tipos works!</p>
+<div class="container mt-5">
+
+  <h1 class="text-center mb-4">
+    Tipos de Pokémon
+  </h1>
+
+  <div class="row g-4">
+
+    @for (tipo of tipos; track tipo.name) {
+
+      <div class="col-md-4">
+
+        <div class="card shadow h-100">
+
+          <div class="card-body text-center">
+
+            <h3 class="card-title text-capitalize">
+              {{ tipo.name }}
+            </h3>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    }
+
+  </div>
+
+</div>

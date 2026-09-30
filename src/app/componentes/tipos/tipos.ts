@@ -1,9 +1,20 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
 @Component({
-  imports: [],
   selector: 'app-tipos',
-  styleUrl: './tipos.css',
-  templateUrl: './tipos.html',
+  templateUrl: './tipos.html'
 })
-export class Tipos {}
+export class Tipos implements OnInit {
+
+  tipos: any[] = [];
+
+  constructor(private http: HttpClient) {}
+
+  ngOnInit(): void {
+    this.http.get<any>('https://pokeapi.co/api/v2/type')
+      .subscribe(respuesta => {
+        this.tipos = respuesta.results;
+      });
+  }
+}

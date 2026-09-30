@@ -1,0 +1,152 @@
+
+<div class="container mt-5 mb-5">
+
+  <h1 class="text-center mb-4">
+    Regiones Pokémon
+  </h1>
+
+  <div class="card shadow mb-4">
+    <div class="card-body">
+
+      <label for="nombreRegion" class="form-label">
+        Nombre de la región
+      </label>
+
+      <div class="input-group">
+        <input
+          id="nombreRegion"
+          type="text"
+          class="form-control"
+          placeholder="Ej. kanto, johto, hoenn"
+          [(ngModel)]="nombreRegion"
+          (keyup.enter)="buscarRegion()"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarRegion()"
+          [disabled]="cargando"
+        >
+          Buscar
+        </button>
+
+        <button
+          class="btn btn-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  @if (cargando) {
+    <div class="alert alert-info text-center">
+      Cargando información de la región...
+    </div>
+  }
+
+  @if (error) {
+    <div class="alert alert-danger text-center">
+      {{ error }}
+    </div>
+  }
+
+  @if (region; as r) {
+
+    <div class="card shadow mb-4">
+      <div class="card-body text-center">
+
+        <h2 class="text-capitalize mb-3">
+          Región {{ r.name }}
+        </h2>
+
+        <p>
+          <strong>ID:</strong> {{ r.id }}
+        </p>
+
+        <p>
+          <strong>Generación principal:</strong>
+          <span class="text-capitalize">
+            {{ r.main_generation?.name ?? 'No disponible' }}
+          </span>
+        </p>
+
+      </div>
+    </div>
+
+    <div class="row g-4">
+
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header bg-primary text-white">
+            <h3 class="h5 mb-0">Pokédexes</h3>
+          </div>
+
+          <div class="card-body">
+            @if (r.pokedexes.length > 0) {
+              <ul class="list-group list-group-flush">
+                @for (pokedex of r.pokedexes; track pokedex.name) {
+                  <li class="list-group-item text-capitalize">
+                    {{ pokedex.name.replace('-', ' ') }}
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p>No hay Pokédexes registradas.</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header bg-success text-white">
+            <h3 class="h5 mb-0">Localidades</h3>
+          </div>
+
+          <div class="card-body">
+            @if (r.locations.length > 0) {
+              <ul class="list-group list-group-flush">
+                @for (localidad of r.locations; track localidad.name) {
+                  <li class="list-group-item text-capitalize">
+                    {{ localidad.name.replace('-', ' ') }}
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p>No hay localidades registradas.</p>
+            }
+          </div>
+        </div>
+      </div>
+
+      <div class="col-md-4">
+        <div class="card shadow h-100">
+          <div class="card-header bg-warning">
+            <h3 class="h5 mb-0">Grupos de versiones</h3>
+          </div>
+
+          <div class="card-body">
+            @if (r.version_groups.length > 0) {
+              <ul class="list-group list-group-flush">
+                @for (version of r.version_groups; track version.name) {
+                  <li class="list-group-item text-capitalize">
+                    {{ version.name.replace('-', ' ') }}
+                  </li>
+                }
+              </ul>
+            } @else {
+              <p>No hay grupos de versiones registrados.</p>
+            }
+          </div>
+        </div>
+      </div>
+
+    </div>
+  }
+
+</div>

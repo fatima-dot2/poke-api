@@ -1,3 +1,4 @@
+
 import { CommonModule } from '@angular/common';
 import { HttpClient } from '@angular/common/http';
 import { Component, OnInit } from '@angular/core';
@@ -8,15 +9,19 @@ interface RegionData {
   name: string;
   main_generation: {
     name: string;
+    url: string;
   } | null;
   pokedexes: {
     name: string;
+    url: string;
   }[];
   locations: {
     name: string;
+    url: string;
   }[];
   version_groups: {
     name: string;
+    url: string;
   }[];
 }
 
@@ -31,7 +36,7 @@ interface RegionData {
 })
 export class Regiones implements OnInit {
 
-  nombreRegion = '';
+  nombreRegion = 'kanto';
 
   region: RegionData | null = null;
 
@@ -42,14 +47,13 @@ export class Regiones implements OnInit {
   constructor(private http: HttpClient) {}
 
   ngOnInit(): void {
-    this.buscarRegion('kanto');
+    this.buscarRegion();
   }
 
-  buscarRegion(nombre?: string): void {
-
-    const nombreBusqueda = (
-      nombre ?? this.nombreRegion
-    ).trim().toLowerCase();
+  buscarRegion(): void {
+    const nombreBusqueda = this.nombreRegion
+      .trim()
+      .toLowerCase();
 
     if (!nombreBusqueda) {
       this.error = 'Escribe el nombre de una región.';
@@ -70,9 +74,8 @@ export class Regiones implements OnInit {
           this.region = data;
           this.cargando = false;
         },
-
         error: () => {
-          this.error = 'No se encontró la región.';
+          this.error = 'No se encontró la región. Verifica el nombre e inténtalo de nuevo.';
           this.region = null;
           this.cargando = false;
         }
@@ -83,5 +86,6 @@ export class Regiones implements OnInit {
     this.nombreRegion = '';
     this.region = null;
     this.error = '';
+    this.cargando = false;
   }
 }
