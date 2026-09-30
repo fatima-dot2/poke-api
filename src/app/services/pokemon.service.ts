@@ -22,4 +22,10 @@ export class PokemonService {
       `${this.apiUrl}/pokemon?limit=${limite}&offset=${offset}`
     );
   }
+
+  obtenerMovimiento(nombre: string): Observable<any> {
+    return this.http.get<any>(
+      `${this.apiUrl}/move/${encodeURIComponent(nombre.trim().toLowerCase())}`
+    );
+  }
 }

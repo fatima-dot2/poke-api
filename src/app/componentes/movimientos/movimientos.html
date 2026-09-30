@@ -1,1 +1,48 @@
-<p>movimientos works!</p>
+<main class="container py-5">
+	<h1 class="text-center mb-4">Movimiento Pokémon</h1>
+
+	@if (cargando) {
+		<div class="text-center" role="status">
+			<span class="spinner-border text-primary" aria-hidden="true"></span>
+			<p class="mt-3">Cargando movimiento...</p>
+		</div>
+	}
+
+	@if (error) {
+		<div class="alert alert-danger text-center" role="alert">
+			{{ error }}
+		</div>
+	}
+
+	@if (movimiento) {
+		<section class="card shadow-sm mx-auto" style="max-width: 36rem">
+			<div class="card-body">
+				<h2 class="card-title text-primary text-center text-capitalize">
+					{{ movimiento.name }}
+				</h2>
+				<dl class="row mb-0">
+					<dt class="col-6">ID</dt>
+					<dd class="col-6">{{ movimiento.id }}</dd>
+
+					<dt class="col-6">Tipo</dt>
+					<dd class="col-6 text-capitalize">{{ movimiento.type?.name || 'No disponible' }}</dd>
+
+					<dt class="col-6">Clase de daño</dt>
+					<dd class="col-6 text-capitalize">{{ movimiento.damage_class?.name || 'No disponible' }}</dd>
+
+					<dt class="col-6">Potencia</dt>
+					<dd class="col-6">{{ movimiento.power ?? 'No disponible' }}</dd>
+
+					<dt class="col-6">Precisión</dt>
+					<dd class="col-6">{{ movimiento.accuracy ?? 'No disponible' }}</dd>
+
+					<dt class="col-6">PP</dt>
+					<dd class="col-6">{{ movimiento.pp ?? 'No disponible' }}</dd>
+
+					<dt class="col-6">Prioridad</dt>
+					<dd class="col-6">{{ movimiento.priority }}</dd>
+				</dl>
+			</div>
+		</section>
+	}
+</main>

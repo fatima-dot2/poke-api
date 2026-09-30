@@ -3,23 +3,28 @@ import { PokemonService } from '../../services/pokemon.service';
 
 @Component({
   selector: 'app-movimientos',
+  standalone: true,
   imports: [],
   templateUrl: './movimientos.html'
 })
 export class Movimientos implements OnInit {
 
-  movimiento: any;
+  movimiento: any = null;
+  cargando = false;
+  error = '';
 
   constructor(private pokemonService: PokemonService) {}
 
   ngOnInit(): void {
+    this.cargando = true;
     this.pokemonService.obtenerMovimiento('thunderbolt').subscribe({
       next: (data) => {
-        console.log('MOVIMIENTO RECIBIDO:', data);
         this.movimiento = data;
+        this.cargando = false;
       },
-      error: (error) => {
-        console.error('ERROR MOVIMIENTO:', error);
+      error: () => {
+        this.error = 'No se pudo cargar el movimiento.';
+        this.cargando = false;
       }
     });
   }
