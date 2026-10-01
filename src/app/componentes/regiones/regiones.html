@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 <div class="container mt-5 mb-5">
 
@@ -18,6 +19,32 @@
           type="text"
           class="form-control"
           placeholder="Ej. kanto, johto, hoenn"
+=======
+<div class="container py-4">
+
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">
+      Regiones Pokémon
+    </h1>
+
+    <p class="text-muted">
+      Consulta información de las regiones disponibles en PokéAPI
+    </p>
+  </div>
+
+  <!-- BUSCADOR -->
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: kanto"
+>>>>>>> dbd9ab7 (ultimos detalles)
           [(ngModel)]="nombreRegion"
           (keyup.enter)="buscarRegion()"
         >
@@ -28,16 +55,32 @@
           (click)="buscarRegion()"
           [disabled]="cargando"
         >
+<<<<<<< HEAD
           Buscar
         </button>
 
         <button
           class="btn btn-secondary"
+=======
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+>>>>>>> dbd9ab7 (ultimos detalles)
           type="button"
           (click)="limpiar()"
         >
           Limpiar
         </button>
+<<<<<<< HEAD
       </div>
 
     </div>
@@ -98,10 +141,269 @@
             } @else {
               <p>No hay Pokédexes registradas.</p>
             }
+=======
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- REGIONES RÁPIDAS -->
+
+  <div class="text-center mb-4">
+
+    <p class="text-muted mb-2">
+      Selecciona una región:
+    </p>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('kanto')"
+    >
+      Kanto
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('johto')"
+    >
+      Johto
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('hoenn')"
+    >
+      Hoenn
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('sinnoh')"
+    >
+      Sinnoh
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('unova')"
+    >
+      Unova
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('kalos')"
+    >
+      Kalos
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('alola')"
+    >
+      Alola
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarRegion('galar')"
+    >
+      Galar
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary mb-2"
+      (click)="buscarRegion('paldea')"
+    >
+      Paldea
+    </button>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+
+  <!-- CARGANDO -->
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+
+  <!-- INFORMACIÓN DE LA REGIÓN -->
+
+  <div
+    *ngIf="region && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+      <!-- TÍTULO -->
+
+      <div class="text-center mb-4">
+
+        <h2 class="fw-bold text-capitalize">
+          {{ region.name }}
+        </h2>
+
+        <span class="badge bg-primary">
+          Región Pokémon
+        </span>
+
+      </div>
+
+
+      <!-- INFORMACIÓN PRINCIPAL -->
+
+      <div class="row g-3">
+
+        <!-- ID -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                ID
+              </h6>
+
+              <h3 class="fw-bold">
+                #{{ region.id }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- GENERACIÓN -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Generación principal
+              </h6>
+
+              <h5 class="fw-bold text-capitalize">
+
+                {{ region.main_generation?.name || 'No disponible' }}
+
+              </h5>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- POKEDEX -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Pokédex asociadas
+              </h6>
+
+              <h3 class="fw-bold">
+                {{ region.pokedexes.length }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LISTAS -->
+
+      <div class="row mt-4 g-4">
+
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold">Pokédex</div>
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let pokedex of pokedexesPaginadas" class="list-group-item text-capitalize">
+                {{ pokedex.name }}
+              </li>
+              <li *ngIf="region.pokedexes.length === 0" class="list-group-item text-muted">
+                No disponible
+              </li>
+            </ul>
+            <div class="card-footer" *ngIf="region.pokedexes.length > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokedexPage === 1" (click)="cambiarPaginaPokedexes(pokedexPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ pokedexPage }} / {{ totalPaginasPokedexes }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokedexPage >= totalPaginasPokedexes" (click)="cambiarPaginaPokedexes(pokedexPage + 1)">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-md-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold">Grupos de versiones</div>
+            <ul class="list-group list-group-flush">
+              <li *ngFor="let version of versionGroupsPaginados" class="list-group-item text-capitalize">
+                {{ version.name }}
+              </li>
+              <li *ngIf="region.version_groups.length === 0" class="list-group-item text-muted">
+                No disponible
+              </li>
+            </ul>
+            <div class="card-footer" *ngIf="region.version_groups.length > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage === 1" (click)="cambiarPaginaVersiones(versionesPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ versionesPage }} / {{ totalPaginasVersiones }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage >= totalPaginasVersiones" (click)="cambiarPaginaVersiones(versionesPage + 1)">Siguiente</button>
+              </div>
+            </div>
+>>>>>>> dbd9ab7 (ultimos detalles)
           </div>
         </div>
       </div>
 
+<<<<<<< HEAD
       <div class="col-md-4">
         <div class="card shadow h-100">
           <div class="card-header bg-success text-white">
@@ -142,11 +444,35 @@
             } @else {
               <p>No hay grupos de versiones registrados.</p>
             }
+=======
+      <div class="card mt-4">
+        <div class="card-header fw-bold">Ubicaciones</div>
+        <div class="card-body">
+          <div class="d-flex flex-wrap gap-2">
+            <span *ngFor="let location of locationsPaginadas" class="badge text-bg-secondary text-capitalize">
+              {{ location.name }}
+            </span>
+          </div>
+          <p *ngIf="region.locations.length === 0" class="text-muted mb-0">
+            No hay ubicaciones disponibles.
+          </p>
+        </div>
+        <div class="card-footer" *ngIf="region.locations.length > 10">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="ubicacionesPage === 1" (click)="cambiarPaginaUbicaciones(ubicacionesPage - 1)">Anterior</button>
+            <span class="small text-muted">{{ ubicacionesPage }} / {{ totalPaginasUbicaciones }}</span>
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="ubicacionesPage >= totalPaginasUbicaciones" (click)="cambiarPaginaUbicaciones(ubicacionesPage + 1)">Siguiente</button>
+>>>>>>> dbd9ab7 (ultimos detalles)
           </div>
         </div>
       </div>
 
     </div>
+<<<<<<< HEAD
   }
+=======
+
+  </div>
+>>>>>>> dbd9ab7 (ultimos detalles)
 
 </div>

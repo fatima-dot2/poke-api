@@ -314,6 +314,7 @@
       </div>
 
 
+<<<<<<< HEAD
       <!-- LISTA DE POKÉMON -->
 
       <div class="card mt-4">
@@ -352,6 +353,31 @@
 
         </div>
 
+=======
+      <div class="card mt-4">
+        <div class="card-header fw-bold">Pokémon registrados</div>
+        <div class="card-body" style="max-height: 500px; overflow-y: auto;">
+          <div class="row g-2">
+            <div *ngFor="let pokemon of pokemonEntriesPaginados" class="col-12 col-sm-6 col-md-4 col-lg-3">
+              <div class="border rounded p-2 h-100">
+                <span class="badge bg-secondary me-2">
+                  #{{ pokemon.entry_number }}
+                </span>
+                <span class="text-capitalize">
+                  {{ pokemon.pokemon_species.name }}
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="card-footer" *ngIf="pokedex.pokemon_entries.length > 10">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="paginaActual === 1" (click)="cambiarPagina(paginaActual - 1)">Anterior</button>
+            <span class="small text-muted">{{ paginaActual }} / {{ totalPaginas }}</span>
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="paginaActual >= totalPaginas" (click)="cambiarPagina(paginaActual + 1)">Siguiente</button>
+          </div>
+        </div>
+>>>>>>> dbd9ab7 (ultimos detalles)
       </div>
 
     </div>

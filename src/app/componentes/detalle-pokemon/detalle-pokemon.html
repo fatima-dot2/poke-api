@@ -88,13 +88,21 @@
         >
 
           <button
+<<<<<<< HEAD
             *ngFor="let item of pokemonFiltrados"
+=======
+            *ngFor="let item of pokemonPaginados; trackBy: trackByPokemonName"
+>>>>>>> dbd9ab7 (ultimos detalles)
             type="button"
             class="list-group-item list-group-item-action text-capitalize text-start"
             (click)="seleccionarPokemon(item.name)"
           >
 
+<<<<<<< HEAD
             {{ item.name }}
+=======
+            {{ obtenerNombrePokemon(item.name) }}
+>>>>>>> dbd9ab7 (ultimos detalles)
 
           </button>
 
@@ -109,6 +117,35 @@
 
         </div>
 
+<<<<<<< HEAD
+=======
+        <div class="card-footer" *ngIf="pokemonFiltrados.length > 0">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              type="button"
+              [disabled]="paginaActual === 1"
+              (click)="cambiarPagina(paginaActual - 1)"
+            >
+              Anterior
+            </button>
+
+            <span class="small text-muted">
+              Página {{ paginaActual }} / {{ totalPaginas }}
+            </span>
+
+            <button
+              class="btn btn-sm btn-outline-primary"
+              type="button"
+              [disabled]="paginaActual >= totalPaginas"
+              (click)="cambiarPagina(paginaActual + 1)"
+            >
+              Siguiente
+            </button>
+          </div>
+        </div>
+
+>>>>>>> dbd9ab7 (ultimos detalles)
       </div>
 
     </div>
@@ -260,7 +297,11 @@
                 *ngFor="let tipo of pokemon.types"
                 class="badge bg-primary me-2 text-capitalize"
               >
+<<<<<<< HEAD
                 {{ tipo.type.name }}
+=======
+                {{ obtenerNombreTipo(tipo.type.name) }}
+>>>>>>> dbd9ab7 (ultimos detalles)
               </span>
 
             </div>

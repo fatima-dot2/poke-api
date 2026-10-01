@@ -4,7 +4,11 @@
     <h1 class="fw-bold">Evolución Pokémon</h1>
 
     <p class="text-muted">
+<<<<<<< HEAD
       Consulta la cadena de evolución de cualquier Pokémon
+=======
+      Escribe el nombre de cualquier Pokémon para ver su cadena de evolución
+>>>>>>> dbd9ab7 (ultimos detalles)
     </p>
   </div>
 
@@ -17,11 +21,23 @@
         <input
           type="text"
           class="form-control"
+<<<<<<< HEAD
           placeholder="Ejemplo: charmander"
+=======
+          placeholder="Escribe o elige un Pokémon"
+          list="listaPokemon"
+>>>>>>> dbd9ab7 (ultimos detalles)
           [(ngModel)]="nombrePokemon"
           (keyup.enter)="buscarEvolucion()"
         >
 
+<<<<<<< HEAD
+=======
+        <datalist id="listaPokemon">
+          <option *ngFor="let nombre of listaPokemon" [value]="nombre"></option>
+        </datalist>
+
+>>>>>>> dbd9ab7 (ultimos detalles)
         <button
           class="btn btn-primary"
           type="button"
@@ -52,6 +68,7 @@
 
   </div>
 
+<<<<<<< HEAD
   <div class="text-center mb-4">
 
     <p class="text-muted">
@@ -95,6 +112,8 @@
 
   </div>
 
+=======
+>>>>>>> dbd9ab7 (ultimos detalles)
   <div
     *ngIf="error"
     class="alert alert-danger text-center"
@@ -126,6 +145,7 @@
     <div class="card-body">
 
       <h2 class="text-center fw-bold mb-4">
+<<<<<<< HEAD
         Cadena de evolución
       </h2>
 
@@ -181,6 +201,71 @@
           </div>
 
         </ng-container>
+=======
+        Cadena de evolución de
+        <span class="text-capitalize text-primary">{{ pokemonBuscado }}</span>
+      </h2>
+
+      <div class="d-flex align-items-center gap-2">
+
+        <button
+          class="btn btn-outline-primary rounded-circle"
+          type="button"
+          (click)="desplazar(-1)"
+        >
+          ‹
+        </button>
+
+        <div #carrusel class="carrusel flex-grow-1">
+
+          <div
+            *ngFor="let evolucion of evoluciones; trackBy: trackByEvolucion"
+            class="etiqueta"
+            [class.etiqueta-activa]="evolucion.nombre === pokemonBuscado"
+          >
+
+            <img
+              [src]="evolucion.imagen"
+              [alt]="evolucion.nombre"
+              loading="lazy"
+            >
+
+            <h5 class="fw-bold text-capitalize mb-1">
+              #{{ evolucion.id }} {{ evolucion.nombre }}
+            </h5>
+
+            <span class="badge bg-primary text-capitalize mb-2">
+              {{ evolucion.trigger }}
+            </span>
+
+            <p *ngIf="evolucion.nivel" class="mb-1 small">
+              <strong>Nivel:</strong> {{ evolucion.nivel }}
+            </p>
+
+            <p *ngIf="evolucion.item" class="mb-1 small text-capitalize">
+              <strong>Objeto:</strong> {{ evolucion.item }}
+            </p>
+
+            <p *ngIf="evolucion.felicidad" class="mb-1 small">
+              <strong>Felicidad:</strong> {{ evolucion.felicidad }}
+            </p>
+
+            <p *ngIf="evolucion.momento" class="mb-0 small text-capitalize">
+              <strong>Momento:</strong> {{ evolucion.momento }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          class="btn btn-outline-primary rounded-circle"
+          type="button"
+          (click)="desplazar(1)"
+        >
+          ›
+        </button>
+>>>>>>> dbd9ab7 (ultimos detalles)
 
       </div>
 
