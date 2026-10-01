@@ -1,15 +1,18 @@
-import { TestBed } from '@angular/core/testing';
-import { PokeApi } from './poke-api';
+import { Injectable } from '@angular/core';
+import { HttpClient } from '@angular/common/http';
 
-describe('PokeApi', () => {
-  let service: PokeApi;
+@Injectable({
+  providedIn: 'root'
+})
+export class PokemonService {
 
-  beforeEach(() => {
-    TestBed.configureTestingModule({});
-    service = TestBed.inject(PokeApi);
-  });
+  private URL_BASE = 'https://pokeapi.co/api/v2/';
 
-  it('should be created', () => {
-    expect(service).toBeTruthy();
-  });
-});
+  constructor(private http: HttpClient) {}
+
+  getPokemonById(id: string) {
+    return this.http.get(
+      this.URL_BASE + 'pokemon/' + id.toLowerCase().trim()
+    );
+  }
+}
