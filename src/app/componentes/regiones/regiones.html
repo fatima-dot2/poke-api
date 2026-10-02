@@ -266,105 +266,68 @@
 
       <div class="row mt-4 g-4">
 
-
-        <!-- POKEDEX -->
-
         <div class="col-12 col-md-6">
-
           <div class="card h-100">
-
-            <div class="card-header fw-bold">
-              Pokédex
-            </div>
-
+            <div class="card-header fw-bold">Pokédex</div>
             <ul class="list-group list-group-flush">
-
-              <li
-                *ngFor="let pokedex of region.pokedexes"
-                class="list-group-item text-capitalize"
-              >
+              <li *ngFor="let pokedex of pokedexesPaginadas" class="list-group-item text-capitalize">
                 {{ pokedex.name }}
               </li>
-
-              <li
-                *ngIf="region.pokedexes.length === 0"
-                class="list-group-item text-muted"
-              >
+              <li *ngIf="region.pokedexes.length === 0" class="list-group-item text-muted">
                 No disponible
               </li>
-
             </ul>
-
+            <div class="card-footer" *ngIf="region.pokedexes.length > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokedexPage === 1" (click)="cambiarPaginaPokedexes(pokedexPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ pokedexPage }} / {{ totalPaginasPokedexes }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokedexPage >= totalPaginasPokedexes" (click)="cambiarPaginaPokedexes(pokedexPage + 1)">Siguiente</button>
+              </div>
+            </div>
           </div>
-
         </div>
-
-
-        <!-- VERSIONES -->
 
         <div class="col-12 col-md-6">
-
           <div class="card h-100">
-
-            <div class="card-header fw-bold">
-              Grupos de versiones
-            </div>
-
+            <div class="card-header fw-bold">Grupos de versiones</div>
             <ul class="list-group list-group-flush">
-
-              <li
-                *ngFor="let version of region.version_groups"
-                class="list-group-item text-capitalize"
-              >
+              <li *ngFor="let version of versionGroupsPaginados" class="list-group-item text-capitalize">
                 {{ version.name }}
               </li>
-
-              <li
-                *ngIf="region.version_groups.length === 0"
-                class="list-group-item text-muted"
-              >
+              <li *ngIf="region.version_groups.length === 0" class="list-group-item text-muted">
                 No disponible
               </li>
-
             </ul>
-
+            <div class="card-footer" *ngIf="region.version_groups.length > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage === 1" (click)="cambiarPaginaVersiones(versionesPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ versionesPage }} / {{ totalPaginasVersiones }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage >= totalPaginasVersiones" (click)="cambiarPaginaVersiones(versionesPage + 1)">Siguiente</button>
+              </div>
+            </div>
           </div>
-
         </div>
-
       </div>
 
-
-      <!-- UBICACIONES -->
-
       <div class="card mt-4">
-
-        <div class="card-header fw-bold">
-          Ubicaciones
-        </div>
-
+        <div class="card-header fw-bold">Ubicaciones</div>
         <div class="card-body">
-
           <div class="d-flex flex-wrap gap-2">
-
-            <span
-              *ngFor="let location of region.locations"
-              class="badge text-bg-secondary text-capitalize"
-            >
+            <span *ngFor="let location of locationsPaginadas" class="badge text-bg-secondary text-capitalize">
               {{ location.name }}
             </span>
-
           </div>
-
-          <p
-            *ngIf="region.locations.length === 0"
-            class="text-muted mb-0"
-          >
+          <p *ngIf="region.locations.length === 0" class="text-muted mb-0">
             No hay ubicaciones disponibles.
           </p>
-
         </div>
-
+        <div class="card-footer" *ngIf="region.locations.length > 10">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="ubicacionesPage === 1" (click)="cambiarPaginaUbicaciones(ubicacionesPage - 1)">Anterior</button>
+            <span class="small text-muted">{{ ubicacionesPage }} / {{ totalPaginasUbicaciones }}</span>
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="ubicacionesPage >= totalPaginasUbicaciones" (click)="cambiarPaginaUbicaciones(ubicacionesPage + 1)">Siguiente</button>
+          </div>
+        </div>
       </div>
 
     </div>

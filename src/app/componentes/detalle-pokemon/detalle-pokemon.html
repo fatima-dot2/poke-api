@@ -31,7 +31,7 @@
           type="button"
           (click)="limpiarBusqueda()"
         >
-          Limpiar Busquda
+          Limpiar
         </button>
 
       </div>
@@ -88,13 +88,13 @@
         >
 
           <button
-            *ngFor="let item of pokemonFiltrados"
+            *ngFor="let item of pokemonPaginados; trackBy: trackByPokemonName"
             type="button"
             class="list-group-item list-group-item-action text-capitalize text-start"
             (click)="seleccionarPokemon(item.name)"
           >
 
-            {{ item.name }}
+            {{ obtenerNombrePokemon(item.name) }}
 
           </button>
 
@@ -107,6 +107,32 @@
 
           </div>
 
+        </div>
+
+        <div class="card-footer" *ngIf="pokemonFiltrados.length > 0">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button
+              class="btn btn-sm btn-outline-primary"
+              type="button"
+              [disabled]="paginaActual === 1"
+              (click)="cambiarPagina(paginaActual - 1)"
+            >
+              Anterior
+            </button>
+
+            <span class="small text-muted">
+              Página {{ paginaActual }} / {{ totalPaginas }}
+            </span>
+
+            <button
+              class="btn btn-sm btn-outline-primary"
+              type="button"
+              [disabled]="paginaActual >= totalPaginas"
+              (click)="cambiarPagina(paginaActual + 1)"
+            >
+              Siguiente
+            </button>
+          </div>
         </div>
 
       </div>
@@ -260,7 +286,7 @@
                 *ngFor="let tipo of pokemon.types"
                 class="badge bg-primary me-2 text-capitalize"
               >
-                {{ tipo.type.name }}
+                {{ obtenerNombreTipo(tipo.type.name) }}
               </span>
 
             </div>

@@ -271,157 +271,119 @@
 
       <div class="row mt-4 g-4">
 
-
-        <!-- POKÉMON -->
-
         <div class="col-12 col-lg-6">
-
           <div class="card h-100">
-
             <div class="card-header fw-bold">
               Especies Pokémon
             </div>
-
-            <div
-              class="card-body"
-              style="max-height: 350px; overflow-y: auto;"
-            >
-
+            <div class="card-body" style="max-height: 350px; overflow-y: auto;">
               <div class="d-flex flex-wrap gap-2">
-
                 <span
-                  *ngFor="let pokemon of generacion.pokemon_species"
+                  *ngFor="let pokemon of pokemonSpeciesPaginados"
                   class="badge text-bg-secondary text-capitalize"
                 >
                   {{ pokemon.name }}
                 </span>
-
               </div>
-
             </div>
-
+            <div class="card-footer" *ngIf="(generacion?.pokemon_species?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokemonPage === 1" (click)="cambiarPaginaPokemon(pokemonPage - 1)">
+                  Anterior
+                </button>
+                <span class="small text-muted">{{ pokemonPage }} / {{ totalPaginasPokemonSpecies }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokemonPage >= totalPaginasPokemonSpecies" (click)="cambiarPaginaPokemon(pokemonPage + 1)">
+                  Siguiente
+                </button>
+              </div>
+            </div>
           </div>
-
         </div>
 
-
-        <!-- HABILIDADES -->
-
         <div class="col-12 col-lg-6">
-
           <div class="card h-100">
-
-            <div class="card-header fw-bold">
-              Habilidades
-            </div>
-
-            <div
-              class="card-body"
-              style="max-height: 350px; overflow-y: auto;"
-            >
-
+            <div class="card-header fw-bold">Habilidades</div>
+            <div class="card-body" style="max-height: 350px; overflow-y: auto;">
               <div class="d-flex flex-wrap gap-2">
-
                 <span
-                  *ngFor="let ability of generacion.abilities"
+                  *ngFor="let ability of habilidadesPaginadas"
                   class="badge text-bg-primary text-capitalize"
                 >
                   {{ ability.name }}
                 </span>
-
               </div>
-
             </div>
-
+            <div class="card-footer" *ngIf="(generacion?.abilities?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="habilidadesPage === 1" (click)="cambiarPaginaHabilidades(habilidadesPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ habilidadesPage }} / {{ totalPaginasHabilidades }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="habilidadesPage >= totalPaginasHabilidades" (click)="cambiarPaginaHabilidades(habilidadesPage + 1)">Siguiente</button>
+              </div>
+            </div>
           </div>
-
         </div>
 
-
-        <!-- MOVIMIENTOS -->
-
         <div class="col-12 col-lg-6">
-
-          <div class="card">
-
-            <div class="card-header fw-bold">
-              Movimientos
-            </div>
-
-            <div
-              class="card-body"
-              style="max-height: 300px; overflow-y: auto;"
-            >
-
+          <div class="card h-100">
+            <div class="card-header fw-bold">Movimientos</div>
+            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
               <div class="d-flex flex-wrap gap-2">
-
                 <span
-                  *ngFor="let move of generacion.moves"
+                  *ngFor="let move of movimientosPaginados"
                   class="badge text-bg-success text-capitalize"
                 >
                   {{ move.name }}
                 </span>
-
               </div>
-
             </div>
-
+            <div class="card-footer" *ngIf="(generacion?.moves?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="movimientosPage === 1" (click)="cambiarPaginaMovimientos(movimientosPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ movimientosPage }} / {{ totalPaginasMovimientos }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="movimientosPage >= totalPaginasMovimientos" (click)="cambiarPaginaMovimientos(movimientosPage + 1)">Siguiente</button>
+              </div>
+            </div>
           </div>
-
         </div>
 
-
-        <!-- TIPOS -->
-
         <div class="col-12 col-lg-6">
-
-          <div class="card">
-
-            <div class="card-header fw-bold">
-              Tipos Pokémon
-            </div>
-
+          <div class="card h-100">
+            <div class="card-header fw-bold">Tipos Pokémon</div>
             <div class="card-body">
-
               <div class="d-flex flex-wrap gap-2">
-
                 <span
-                  *ngFor="let type of generacion.types"
+                  *ngFor="let type of tiposPaginados"
                   class="badge text-bg-warning text-capitalize"
                 >
                   {{ type.name }}
                 </span>
-
               </div>
-
             </div>
-
+            <div class="card-footer" *ngIf="(generacion?.types?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="tiposPage === 1" (click)="cambiarPaginaTipos(tiposPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ tiposPage }} / {{ totalPaginasTipos }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="tiposPage >= totalPaginasTipos" (click)="cambiarPaginaTipos(tiposPage + 1)">Siguiente</button>
+              </div>
+            </div>
           </div>
-
         </div>
-
       </div>
 
-
-      <!-- VERSIONES -->
-
       <div class="card mt-4">
-
-        <div class="card-header fw-bold">
-          Grupos de versiones
-        </div>
-
+        <div class="card-header fw-bold">Grupos de versiones</div>
         <ul class="list-group list-group-flush">
-
-          <li
-            *ngFor="let version of generacion.version_groups"
-            class="list-group-item text-capitalize"
-          >
+          <li *ngFor="let version of versionesPaginadas" class="list-group-item text-capitalize">
             {{ version.name }}
           </li>
-
         </ul>
-
+        <div class="card-footer" *ngIf="(generacion?.version_groups?.length ?? 0) > 10">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage === 1" (click)="cambiarPaginaVersiones(versionesPage - 1)">Anterior</button>
+            <span class="small text-muted">{{ versionesPage }} / {{ totalPaginasVersiones }}</span>
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage >= totalPaginasVersiones" (click)="cambiarPaginaVersiones(versionesPage + 1)">Siguiente</button>
+          </div>
+        </div>
       </div>
 
     </div>

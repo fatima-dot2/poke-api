@@ -3,7 +3,9 @@ import { provideHttpClient } from '@angular/common/http';
 import {
   provideHttpClientTesting
 } from '@angular/common/http/testing';
+import { of } from 'rxjs';
 
+import { PokemonService } from '../../services/pokemon-service';
 import { DetallePokemon } from './detalle-pokemon';
 
 describe('DetallePokemon', () => {
@@ -71,6 +73,34 @@ describe('DetallePokemon', () => {
 
     expect(component.cargandoLista).toBeFalsy();
     expect(component.cargandoDetalle).toBeFalsy();
+
+  });
+
+  it('debe esperar la búsqueda antes de cargar la lista completa', async () => {
+
+    const pokemonService = TestBed.inject(PokemonService);
+    const getPokemonListSpy = vi.spyOn(pokemonService, 'getPokemonList')
+      .mockReturnValue(of({ count: 0, results: [] }));
+
+    const fixture =
+      TestBed.createComponent(DetallePokemon);
+
+    fixture.detectChanges();
+
+    const component =
+      fixture.componentInstance;
+
+    expect(component.listaPokemon).toEqual([]);
+    expect(component.pokemonFiltrados).toEqual([]);
+    expect(component.paginaActual).toBe(1);
+    expect(getPokemonListSpy).not.toHaveBeenCalled();
+
+    component.busqueda = 'pik';
+    component.filtrarPokemon();
+
+    await new Promise(resolve => setTimeout(resolve, 400));
+
+    expect(getPokemonListSpy).toHaveBeenCalledTimes(1);
 
   });
 
