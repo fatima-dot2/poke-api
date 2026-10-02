@@ -1,1 +1,393 @@
-<p>generaciones works!</p>
+<div class="container py-4">
+
+  <!-- ENCABEZADO -->
+
+  <div class="text-center mb-4">
+
+    <h1 class="fw-bold">
+      Generaciones Pokémon
+    </h1>
+
+    <p class="text-muted">
+      Consulta información de las generaciones disponibles en PokéAPI
+    </p>
+
+  </div>
+
+
+  <!-- BUSCADOR -->
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Ejemplo: generation-i"
+          [(ngModel)]="nombreGeneracion"
+          (keyup.enter)="buscarGeneracion()"
+        >
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarGeneracion()"
+          [disabled]="cargando"
+        >
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+
+  <!-- GENERACIONES RÁPIDAS -->
+
+  <div class="text-center mb-4">
+
+    <p class="text-muted mb-2">
+      Selecciona una generación:
+    </p>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-i')"
+    >
+      Generación I
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-ii')"
+    >
+      Generación II
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-iii')"
+    >
+      Generación III
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-iv')"
+    >
+      Generación IV
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-v')"
+    >
+      Generación V
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-vi')"
+    >
+      Generación VI
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-vii')"
+    >
+      Generación VII
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary me-2 mb-2"
+      (click)="buscarGeneracion('generation-viii')"
+    >
+      Generación VIII
+    </button>
+
+    <button
+      class="btn btn-sm btn-outline-primary mb-2"
+      (click)="buscarGeneracion('generation-ix')"
+    >
+      Generación IX
+    </button>
+
+  </div>
+
+
+  <!-- ERROR -->
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+    role="alert"
+  >
+    {{ error }}
+  </div>
+
+
+  <!-- CARGANDO -->
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+
+  <!-- RESULTADO -->
+
+  <div
+    *ngIf="generacion && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+
+      <!-- TÍTULO -->
+
+      <div class="text-center mb-4">
+
+        <h2 class="fw-bold text-capitalize">
+          {{ generacion.name }}
+        </h2>
+
+        <span class="badge bg-primary">
+          Generación Pokémon
+        </span>
+
+      </div>
+
+
+      <!-- INFORMACIÓN GENERAL -->
+
+      <div class="row g-3">
+
+
+        <!-- ID -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                ID
+              </h6>
+
+              <h3 class="fw-bold">
+                #{{ generacion.id }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- REGIÓN -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Región principal
+              </h6>
+
+              <h5 class="fw-bold text-capitalize">
+                {{ generacion.main_region.name }}
+              </h5>
+
+            </div>
+
+          </div>
+
+        </div>
+
+
+        <!-- POKÉMON -->
+
+        <div class="col-12 col-md-4">
+
+          <div class="card h-100 bg-light border-0">
+
+            <div class="card-body text-center">
+
+              <h6 class="text-muted">
+                Especies Pokémon
+              </h6>
+
+              <h3 class="fw-bold">
+                {{ generacion.pokemon_species.length }}
+              </h3>
+
+            </div>
+
+          </div>
+
+        </div>
+
+      </div>
+
+
+      <!-- LISTAS -->
+
+      <div class="row mt-4 g-4">
+
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold">
+              Especies Pokémon
+            </div>
+            <div class="card-body" style="max-height: 350px; overflow-y: auto;">
+              <div class="d-flex flex-wrap gap-2">
+                <span
+                  *ngFor="let pokemon of pokemonSpeciesPaginados"
+                  class="badge text-bg-secondary text-capitalize"
+                >
+                  {{ pokemon.name }}
+                </span>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="(generacion?.pokemon_species?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokemonPage === 1" (click)="cambiarPaginaPokemon(pokemonPage - 1)">
+                  Anterior
+                </button>
+                <span class="small text-muted">{{ pokemonPage }} / {{ totalPaginasPokemonSpecies }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="pokemonPage >= totalPaginasPokemonSpecies" (click)="cambiarPaginaPokemon(pokemonPage + 1)">
+                  Siguiente
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold">Habilidades</div>
+            <div class="card-body" style="max-height: 350px; overflow-y: auto;">
+              <div class="d-flex flex-wrap gap-2">
+                <span
+                  *ngFor="let ability of habilidadesPaginadas"
+                  class="badge text-bg-primary text-capitalize"
+                >
+                  {{ ability.name }}
+                </span>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="(generacion?.abilities?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="habilidadesPage === 1" (click)="cambiarPaginaHabilidades(habilidadesPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ habilidadesPage }} / {{ totalPaginasHabilidades }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="habilidadesPage >= totalPaginasHabilidades" (click)="cambiarPaginaHabilidades(habilidadesPage + 1)">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold">Movimientos</div>
+            <div class="card-body" style="max-height: 300px; overflow-y: auto;">
+              <div class="d-flex flex-wrap gap-2">
+                <span
+                  *ngFor="let move of movimientosPaginados"
+                  class="badge text-bg-success text-capitalize"
+                >
+                  {{ move.name }}
+                </span>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="(generacion?.moves?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="movimientosPage === 1" (click)="cambiarPaginaMovimientos(movimientosPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ movimientosPage }} / {{ totalPaginasMovimientos }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="movimientosPage >= totalPaginasMovimientos" (click)="cambiarPaginaMovimientos(movimientosPage + 1)">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="col-12 col-lg-6">
+          <div class="card h-100">
+            <div class="card-header fw-bold">Tipos Pokémon</div>
+            <div class="card-body">
+              <div class="d-flex flex-wrap gap-2">
+                <span
+                  *ngFor="let type of tiposPaginados"
+                  class="badge text-bg-warning text-capitalize"
+                >
+                  {{ type.name }}
+                </span>
+              </div>
+            </div>
+            <div class="card-footer" *ngIf="(generacion?.types?.length ?? 0) > 10">
+              <div class="d-flex justify-content-between align-items-center gap-2">
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="tiposPage === 1" (click)="cambiarPaginaTipos(tiposPage - 1)">Anterior</button>
+                <span class="small text-muted">{{ tiposPage }} / {{ totalPaginasTipos }}</span>
+                <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="tiposPage >= totalPaginasTipos" (click)="cambiarPaginaTipos(tiposPage + 1)">Siguiente</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card mt-4">
+        <div class="card-header fw-bold">Grupos de versiones</div>
+        <ul class="list-group list-group-flush">
+          <li *ngFor="let version of versionesPaginadas" class="list-group-item text-capitalize">
+            {{ version.name }}
+          </li>
+        </ul>
+        <div class="card-footer" *ngIf="(generacion?.version_groups?.length ?? 0) > 10">
+          <div class="d-flex justify-content-between align-items-center gap-2">
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage === 1" (click)="cambiarPaginaVersiones(versionesPage - 1)">Anterior</button>
+            <span class="small text-muted">{{ versionesPage }} / {{ totalPaginasVersiones }}</span>
+            <button class="btn btn-sm btn-outline-primary" type="button" [disabled]="versionesPage >= totalPaginasVersiones" (click)="cambiarPaginaVersiones(versionesPage + 1)">Siguiente</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

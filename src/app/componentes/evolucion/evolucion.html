@@ -1,1 +1,161 @@
-<p>evolucion works!</p>
+<div class="container py-4">
+
+  <div class="text-center mb-4">
+    <h1 class="fw-bold">Evolución Pokémon</h1>
+
+    <p class="text-muted">
+      Escribe el nombre de cualquier Pokémon para ver su cadena de evolución
+    </p>
+  </div>
+
+  <div class="row justify-content-center mb-4">
+
+    <div class="col-12 col-md-8 col-lg-6">
+
+      <div class="input-group">
+
+        <input
+          type="text"
+          class="form-control"
+          placeholder="Escribe o elige un Pokémon"
+          list="listaPokemon"
+          [(ngModel)]="nombrePokemon"
+          (keyup.enter)="buscarEvolucion()"
+        >
+
+        <datalist id="listaPokemon">
+          <option *ngFor="let nombre of listaPokemon" [value]="nombre"></option>
+        </datalist>
+
+        <button
+          class="btn btn-primary"
+          type="button"
+          (click)="buscarEvolucion()"
+          [disabled]="cargando"
+        >
+
+          <span
+            *ngIf="cargando"
+            class="spinner-border spinner-border-sm me-2"
+          ></span>
+
+          Buscar
+
+        </button>
+
+        <button
+          class="btn btn-outline-secondary"
+          type="button"
+          (click)="limpiar()"
+        >
+          Limpiar
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+  <div
+    *ngIf="error"
+    class="alert alert-danger text-center"
+  >
+    {{ error }}
+  </div>
+
+  <div
+    *ngIf="cargando"
+    class="text-center py-5"
+  >
+
+    <div
+      class="spinner-border text-primary"
+      role="status"
+    ></div>
+
+    <p class="mt-3 text-muted">
+      Consultando PokéAPI...
+    </p>
+
+  </div>
+
+  <div
+    *ngIf="evoluciones.length > 0 && !cargando"
+    class="card shadow-sm border-0"
+  >
+
+    <div class="card-body">
+
+      <h2 class="text-center fw-bold mb-4">
+        Cadena de evolución de
+        <span class="text-capitalize text-primary">{{ pokemonBuscado }}</span>
+      </h2>
+
+      <div class="d-flex align-items-center gap-2">
+
+        <button
+          class="btn btn-outline-primary rounded-circle"
+          type="button"
+          (click)="desplazar(-1)"
+        >
+          ‹
+        </button>
+
+        <div #carrusel class="carrusel flex-grow-1">
+
+          <div
+            *ngFor="let evolucion of evoluciones; trackBy: trackByEvolucion"
+            class="etiqueta"
+            [class.etiqueta-activa]="evolucion.nombre === pokemonBuscado"
+          >
+
+            <img
+              [src]="evolucion.imagen"
+              [alt]="evolucion.nombre"
+              loading="lazy"
+            >
+
+            <h5 class="fw-bold text-capitalize mb-1">
+              #{{ evolucion.id }} {{ evolucion.nombre }}
+            </h5>
+
+            <span class="badge bg-primary text-capitalize mb-2">
+              {{ evolucion.trigger }}
+            </span>
+
+            <p *ngIf="evolucion.nivel" class="mb-1 small">
+              <strong>Nivel:</strong> {{ evolucion.nivel }}
+            </p>
+
+            <p *ngIf="evolucion.item" class="mb-1 small text-capitalize">
+              <strong>Objeto:</strong> {{ evolucion.item }}
+            </p>
+
+            <p *ngIf="evolucion.felicidad" class="mb-1 small">
+              <strong>Felicidad:</strong> {{ evolucion.felicidad }}
+            </p>
+
+            <p *ngIf="evolucion.momento" class="mb-0 small text-capitalize">
+              <strong>Momento:</strong> {{ evolucion.momento }}
+            </p>
+
+          </div>
+
+        </div>
+
+        <button
+          class="btn btn-outline-primary rounded-circle"
+          type="button"
+          (click)="desplazar(1)"
+        >
+          ›
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+</div>

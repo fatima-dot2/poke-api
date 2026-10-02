@@ -1,48 +1,116 @@
-<main class="container py-5">
-	<h1 class="text-center mb-4">Movimiento Pokémon</h1>
+<div class="container mt-5">
 
-	@if (cargando) {
-		<div class="text-center" role="status">
-			<span class="spinner-border text-primary" aria-hidden="true"></span>
-			<p class="mt-3">Cargando movimiento...</p>
-		</div>
-	}
+  <h1 class="text-center mb-4">
+    Movimientos Pokémon
+  </h1>
 
-	@if (error) {
-		<div class="alert alert-danger text-center" role="alert">
-			{{ error }}
-		</div>
-	}
+  <div class="row justify-content-center">
 
-	@if (movimiento) {
-		<section class="card shadow-sm mx-auto" style="max-width: 36rem">
-			<div class="card-body">
-				<h2 class="card-title text-primary text-center text-capitalize">
-					{{ movimiento.name }}
-				</h2>
-				<dl class="row mb-0">
-					<dt class="col-6">ID</dt>
-					<dd class="col-6">{{ movimiento.id }}</dd>
+    <div class="col-md-6">
 
-					<dt class="col-6">Tipo</dt>
-					<dd class="col-6 text-capitalize">{{ movimiento.type?.name || 'No disponible' }}</dd>
+      <input
+        type="text"
+        class="form-control mb-3"
+        [(ngModel)]="nombre"
+        (keyup.enter)="buscarMovimiento()"
+        placeholder="Ejemplo: thunderbolt"
+      >
 
-					<dt class="col-6">Clase de daño</dt>
-					<dd class="col-6 text-capitalize">{{ movimiento.damage_class?.name || 'No disponible' }}</dd>
+      <button
+        class="btn btn-primary w-100"
+        (click)="buscarMovimiento()">
 
-					<dt class="col-6">Potencia</dt>
-					<dd class="col-6">{{ movimiento.power ?? 'No disponible' }}</dd>
+        Buscar movimiento
 
-					<dt class="col-6">Precisión</dt>
-					<dd class="col-6">{{ movimiento.accuracy ?? 'No disponible' }}</dd>
+      </button>
 
-					<dt class="col-6">PP</dt>
-					<dd class="col-6">{{ movimiento.pp ?? 'No disponible' }}</dd>
+    </div>
 
-					<dt class="col-6">Prioridad</dt>
-					<dd class="col-6">{{ movimiento.priority }}</dd>
-				</dl>
-			</div>
-		</section>
-	}
-</main>
+  </div>
+
+  @if (movimiento) {
+
+    <div class="row justify-content-center mt-5">
+
+      <div class="col-md-8">
+
+        <div class="card shadow">
+
+          <div class="card-body">
+
+            <h2 class="card-title text-primary text-center">
+              {{ movimiento.name | uppercase }}
+            </h2>
+
+            <hr>
+
+            <p class="card-text">
+              <strong>ID:</strong>
+              {{ movimiento.id }}
+            </p>
+
+            <p class="card-text">
+              <strong>Tipo:</strong>
+
+              @if (movimiento.type) {
+                {{ movimiento.type.name | uppercase }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Clase de daño:</strong>
+
+              @if (movimiento.damage_class) {
+                {{ movimiento.damage_class.name | uppercase }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Potencia:</strong>
+
+              @if (movimiento.power !== null) {
+                {{ movimiento.power }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>Precisión:</strong>
+
+              @if (movimiento.accuracy !== null) {
+                {{ movimiento.accuracy }}
+              } @else {
+                No disponible
+              }
+
+            </p>
+
+            <p class="card-text">
+              <strong>PP:</strong>
+              {{ movimiento.pp ?? 'No disponible' }}
+            </p>
+
+            <p class="card-text">
+              <strong>Prioridad:</strong>
+              {{ movimiento.priority }}
+            </p>
+
+          </div>
+
+        </div>
+
+      </div>
+
+    </div>
+
+  }
+
+</div>

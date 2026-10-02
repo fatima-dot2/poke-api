@@ -1,8 +1,31 @@
-import { Component } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { HttpClient } from '@angular/common/http';
+import { Component, OnInit } from '@angular/core';
 import { FormsModule } from '@angular/forms';
-import { PokemonService } from '../../services/pokemon.service';
-import Swal from 'sweetalert2';
+
+interface PokedexData {
+  id: number;
+  name: string;
+  is_main_series: boolean;
+
+  descriptions: {
+    description: string;
+    language: {
+      name: string;
+    };
+  }[];
+
+  pokemon_entries: {
+    entry_number: number;
+    pokemon_species: {
+      name: string;
+    };
+  }[];
+
+  region: {
+    name: string;
+  } | null;
+}
 
 @Component({
   selector: 'app-pokedex',
@@ -13,86 +36,72 @@ import Swal from 'sweetalert2';
   ],
   templateUrl: './pokedex.html'
 })
-export class PokedexComponent {
+export class Pokedex implements OnInit {
 
-  pokemones: any[] = [];
-  pokemonBuscado = '';
+  nombrePokedex = '';
+  pokedex: PokedexData | null = null;
   cargando = false;
+  error = '';
 
-  constructor(private pokemonService: PokemonService) {}
+  pageSize = 10;
+  paginaActual = 1;
+
+  constructor(private http: HttpClient) {}
+
+  get pokemonEntriesPaginados(): { entry_number: number; pokemon_species: { name: string } }[] {
+    return this.paginar(this.pokedex?.pokemon_entries ?? [], this.paginaActual);
+  }
+
+  get totalPaginas(): number {
+    return Math.max(1, Math.ceil((this.pokedex?.pokemon_entries?.length ?? 0) / this.pageSize));
+  }
 
   ngOnInit(): void {
-    this.cargarPokemones();
+    this.buscarPokedex('national');
   }
 
-  cargarPokemones(): void {
-    this.cargando = true;
-    this.pokemonService.obtenerPokemones(20, 0).subscribe({
-      next: ( respuesta ) => {
+  buscarPokedex(nombre?: string): void {
+    const nombreBusqueda = (nombre ?? this.nombrePokedex).trim().toLowerCase();
 
-        this.pokemones = respuesta.results;
-        this.cargando = false;
-
-      },
-      error: () => {
-        this.cargando = false;
-
-        Swal.fire({
-          icon: 'error',
-          title: 'Error',
-          text: 'No se pudieron cargar los Pokémon.'
-        });
-
-      }
-    });
-  }
-
-  buscarPokemon(): void {
-
-    if (!this.pokemonBuscado.trim()) {
-
-      Swal.fire({
-        icon: 'warning',
-        title: 'Campo vacío',
-        text: 'Escribe el nombre de un Pokémon.'
-      });
-
+    if (!nombreBusqueda) {
+      this.error = 'Escribe el nombre de una Pokédex.';
+      this.pokedex = null;
       return;
     }
 
     this.cargando = true;
-    this.pokemonService
-      .obtenerPokemon(this.pokemonBuscado)
+    this.error = '';
+    this.pokedex = null;
+
+    this.http
+      .get<PokedexData>(`https://pokeapi.co/api/v2/pokedex/${nombreBusqueda}`)
       .subscribe({
-
-        next: (pokemon) => {
-
-          this.pokemones = [pokemon];
+        next: (data) => {
+          this.pokedex = data;
+          this.nombrePokedex = data.name;
+          this.paginaActual = 1;
           this.cargando = false;
-
         },
-
         error: () => {
-
+          this.error = 'No se encontró la Pokédex.';
+          this.pokedex = null;
           this.cargando = false;
-          this.pokemones = [];
-
-          Swal.fire({
-            icon: 'error',
-            title: 'Pokémon no encontrado',
-            text: 'No encontramos ese Pokémon. Verifica el nombre.'
-          });
-
         }
-
       });
-
   }
 
-  obtenerNumero(url: string): number {
-    const partes = url.split('/');
-    return Number(partes[partes.length - 2]);
-
+  private paginar<T>(items: T[], pagina: number): T[] {
+    const inicio = (pagina - 1) * this.pageSize;
+    return items.slice(inicio, inicio + this.pageSize);
   }
 
+  cambiarPagina(pagina: number): void {
+    this.paginaActual = Math.min(Math.max(1, pagina), this.totalPaginas);
+  }
+
+  limpiar(): void {
+    this.nombrePokedex = '';
+    this.pokedex = null;
+    this.error = '';
+  }
 }
